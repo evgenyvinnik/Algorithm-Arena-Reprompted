@@ -1,2 +1,72 @@
 # Algorithm-Arena-Reprompted
+
 Algorithm-Arena questions achieved with prompts
+
+## Features
+
+- ⚡ Vite + React 19
+- 🔧 React Compiler for automatic optimization
+- 🎯 React Router with Hash Routing
+- 📦 Pure JavaScript (no TypeScript)
+- 🚀 GitHub Pages deployment
+- 📊 Two-column comparison: Gemini 3 vs Opus 4.5
+- 📝 72 completion components (36 for each model)
+
+## Project Structure
+
+```
+├── src/
+│   ├── components/
+│   │   ├── gemini3/         # 36 Gemini 3 completion components
+│   │   ├── opus45/          # 36 Opus 4.5 completion components
+│   │   └── Home.jsx         # Home page with two-column layout
+│   ├── App.jsx              # Main app with routing configuration
+│   └── main.jsx             # Entry point
+├── .github/workflows/
+│   └── deploy.yml           # GitHub Actions workflow for deployment
+└── vite.config.js           # Vite configuration with React Compiler
+```
+
+## Getting Started
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview
+
+```bash
+npm run preview
+```
+
+### Deploy to GitHub Pages
+
+The project is configured to automatically deploy to GitHub Pages on push to main branch via GitHub Actions.
+
+Alternatively, you can manually deploy using:
+
+```bash
+npm run deploy
+```
+
+## Technologies
+
+- **Vite** - Fast build tool and dev server
+- **React 19** - Latest React version with concurrent features
+- **React Compiler** - Automatic optimization of React components
+- **React Router** - Hash routing for GitHub Pages compatibility
+- **GitHub Actions** - Automated CI/CD pipeline
