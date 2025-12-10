@@ -2,6 +2,35 @@
 
 Algorithm-Arena questions achieved with prompts
 
+## Prompt Format
+
+Each challenge was given to the LLMs using the following prompt format:
+
+```
+Implement challenge as described on
+
+https://github.com/Algorithm-Arena/weekly-challenge-{N}-{challenge-name}
+
+Make sure to put everything into Completion{N}.jsx file
+```
+
+For example, for challenge #4:
+
+```
+Implement challenge as described on
+
+https://github.com/Algorithm-Arena/weekly-challenge-4-encrypted-thread
+
+Make sure to put everything into Completion4.jsx file
+```
+
+The LLMs were expected to read the challenge description from the GitHub repository and implement a complete solution as a single React component.
+
+## Tools Used
+
+- **Opus 4.5 completions**: GitHub Copilot + Claude Opus 4.5 (Preview)
+- **Gemini 3 completions**: Google AI Studio + Gemini 3 Pro (High)
+
 ## Features
 
 - ⚡ Vite + React 19

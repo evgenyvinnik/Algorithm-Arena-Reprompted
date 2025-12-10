@@ -3,10 +3,22 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 
 const promptLinks = {
-  1: { name: "Stockfish Chess", url: "https://github.com/Algorithm-Arena/weekly-challenge-1-stockfish-chess" },
-  2: { name: "Double Lines", url: "https://github.com/Algorithm-Arena/weekly-challenge-2-double-lines" },
-  3: { name: "Bouncy Form", url: "https://github.com/Algorithm-Arena/weekly-challenge-3-bouncy-form" },
-  4: { name: "Encrypted Thread", url: "https://github.com/Algorithm-Arena/weekly-challenge-4-encrypted-thread" },
+  1: {
+    name: "Stockfish Chess",
+    url: "https://github.com/Algorithm-Arena/weekly-challenge-1-stockfish-chess",
+  },
+  2: {
+    name: "Double Lines",
+    url: "https://github.com/Algorithm-Arena/weekly-challenge-2-double-lines",
+  },
+  3: {
+    name: "Bouncy Form",
+    url: "https://github.com/Algorithm-Arena/weekly-challenge-3-bouncy-form",
+  },
+  4: {
+    name: "Encrypted Thread",
+    url: "https://github.com/Algorithm-Arena/weekly-challenge-4-encrypted-thread",
+  },
   5: { name: "Challenge 5", url: "https://github.com" },
   6: { name: "Challenge 6", url: "https://github.com" },
   7: { name: "Challenge 7", url: "https://github.com" },
