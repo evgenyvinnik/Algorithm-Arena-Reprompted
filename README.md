@@ -1,6 +1,8 @@
 # Algorithm-Arena-Reprompted
 
-Algorithm-Arena questions achieved with prompts
+Algorithm-Arena questions achieved with prompts.
+
+Based on challenges from [Algorithm Arena](https://github.com/Algorithm-Arena).
 
 ## Prompt Format
 
