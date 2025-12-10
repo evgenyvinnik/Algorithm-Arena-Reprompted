@@ -57,7 +57,7 @@ const humanReviewLinks = {
   1: "Both failed spectacularly.",
   2: "Gemini3 works well, Opus 4.5 doesn't achieve the goal",
   3: "Both failed - results are underwheliming",
-  4: "Both able to achieve the goal, I think Gemini 3 did a better job",
+  4: "Gemini3 works well, Opus 4.5 doesn't achieve the goal",
   5: "Not Implemented",
   6: "Not Implemented",
   7: "Not Implemented",
