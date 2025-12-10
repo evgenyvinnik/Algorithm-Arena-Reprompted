@@ -9,7 +9,11 @@ Algorithm-Arena questions achieved with prompts
 - 🎯 React Router with Hash Routing
 - 📦 Pure JavaScript (no TypeScript)
 - 🚀 GitHub Pages deployment
-- 📊 Two-column comparison: Gemini 3 vs Opus 4.5
+- 📊 Four-column comparison layout:
+  - **Gemini 3** - AI completions from Gemini 3 model
+  - **Opus 4.5** - AI completions from Claude Opus 4.5 model
+  - **Prompts** - Links to original Algorithm Arena challenge repositories
+  - **Human Review** - Personal opinions and evaluations
 - 📝 72 completion components (36 for each model)
 
 ## Project Structure
@@ -19,7 +23,7 @@ Algorithm-Arena questions achieved with prompts
 │   ├── components/
 │   │   ├── gemini3/         # 36 Gemini 3 completion components
 │   │   ├── opus45/          # 36 Opus 4.5 completion components
-│   │   └── Home.jsx         # Home page with two-column layout
+│   │   └── Home.jsx         # Home page with four-column layout
 │   ├── App.jsx              # Main app with routing configuration
 │   └── main.jsx             # Entry point
 ├── .github/workflows/
