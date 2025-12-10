@@ -11,7 +11,7 @@
 
 .columns-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 40px;
 }
 
@@ -28,6 +28,10 @@
 
 .opus-header {
   background-color: #fce4ec;
+}
+
+.prompts-header {
+  background-color: #e8f5e9;
 }
 
 .completions-list {
@@ -56,4 +60,8 @@
 
 .opus-link {
   color: #c2185b;
+}
+
+.prompts-link {
+  color: #388e3c;
 }
