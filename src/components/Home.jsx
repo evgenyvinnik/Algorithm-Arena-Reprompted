@@ -101,7 +101,7 @@ const humanReviewLinks = {
   12: 'Mine winning submission was better 😛',
   13: 'Opus 4.5 implementation is better - at least it is fun',
   14: 'Free Money printer is ready',
-  15: 'Not Implemented',
+  15: 'Opus 4.5 implementation is just so, so much better',
   16: 'Not Implemented',
   17: 'Not Implemented',
   18: 'Not Implemented',

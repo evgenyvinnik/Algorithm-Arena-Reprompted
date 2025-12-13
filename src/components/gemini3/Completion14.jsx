@@ -51,8 +51,7 @@ const md5 = (string) => {
     let lWordCount;
     const lMessageLength = string.length;
     const lNumberOfWords_temp1 = lMessageLength + 8;
-    const lNumberOfWords_temp2 =
-      (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
+    const lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
     const lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
     const lWordArray = Array(lNumberOfWords - 1);
     let lBytePosition = 0;
@@ -61,7 +60,7 @@ const md5 = (string) => {
       lWordCount = (lByteCount - (lByteCount % 4)) / 4;
       lBytePosition = (lByteCount % 4) * 8;
       lWordArray[lWordCount] =
-        (lWordArray[lWordCount] | (string.charCodeAt(lByteCount) << lBytePosition));
+        lWordArray[lWordCount] | (string.charCodeAt(lByteCount) << lBytePosition);
       lByteCount++;
     }
     lWordCount = (lByteCount - (lByteCount % 4)) / 4;
@@ -81,8 +80,7 @@ const md5 = (string) => {
       lByte = (lValue >>> (lCount * 8)) & 255;
       wordToHexValue_temp = '0' + lByte.toString(16);
       wordToHexValue =
-        wordToHexValue +
-        wordToHexValue_temp.substr(wordToHexValue_temp.length - 2, 2);
+        wordToHexValue + wordToHexValue_temp.substr(wordToHexValue_temp.length - 2, 2);
     }
     return wordToHexValue;
   };
@@ -199,9 +197,7 @@ const DIFFICULTY_PREFIX = '0000'; // Target hash prefix
 const MINING_REWARD = 50;
 
 const calculateHash = (index, previousHash, timestamp, transactions, nonce) => {
-  return md5(
-    index + previousHash + timestamp + JSON.stringify(transactions) + nonce
-  );
+  return md5(index + previousHash + timestamp + JSON.stringify(transactions) + nonce);
 };
 
 const createGenesisBlock = () => {
@@ -242,9 +238,9 @@ const Completion14 = () => {
 
     // Optimistic balance update for UI (in a real chain this happens after confirmation)
     // But for this demo, we'll deduct now to prevent double spend in pending pool easily
-    setWallets(prev => ({
+    setWallets((prev) => ({
       ...prev,
-      [sender]: prev[sender] - amount
+      [sender]: prev[sender] - amount,
     }));
 
     const newTx = {
@@ -252,10 +248,10 @@ const Completion14 = () => {
       sender,
       recipient,
       amount,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
 
-    setPendingTransactions(prev => [...prev, newTx]);
+    setPendingTransactions((prev) => [...prev, newTx]);
   };
 
   const mineBlock = async () => {
@@ -278,7 +274,7 @@ const Completion14 = () => {
         recipient: 'Miner',
         amount: MINING_REWARD,
         timestamp: Date.now(),
-        type: 'reward'
+        type: 'reward',
       };
       transactions.push(rewardTx);
 
@@ -310,18 +306,18 @@ const Completion14 = () => {
           timestamp,
           transactions,
           nonce,
-          hash
+          hash,
         };
 
-        setBlockchain(prev => [...prev, newBlock]);
+        setBlockchain((prev) => [...prev, newBlock]);
         setPendingTransactions([]);
 
         // Update Miner balance (and recipients of pending txs)
-        setWallets(prev => {
+        setWallets((prev) => {
           const newWallets = { ...prev };
 
           // Credit recipients
-          transactions.forEach(tx => {
+          transactions.forEach((tx) => {
             if (newWallets[tx.recipient] !== undefined) {
               newWallets[tx.recipient] += tx.amount;
             } else {
@@ -339,7 +335,6 @@ const Completion14 = () => {
       };
 
       mine();
-
     }, 100);
   };
 
@@ -348,7 +343,16 @@ const Completion14 = () => {
       const currentBlock = blockchain[i];
       const previousBlock = blockchain[i - 1];
 
-      if (currentBlock.hash !== calculateHash(currentBlock.index, currentBlock.previousHash, currentBlock.timestamp, currentBlock.transactions, currentBlock.nonce)) {
+      if (
+        currentBlock.hash !==
+        calculateHash(
+          currentBlock.index,
+          currentBlock.previousHash,
+          currentBlock.timestamp,
+          currentBlock.transactions,
+          currentBlock.nonce
+        )
+      ) {
         return false;
       }
 
@@ -362,13 +366,16 @@ const Completion14 = () => {
   const isChainValid = validateChain();
 
   return (
-    <div style={{
-      padding: '40px',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-      background: '#f0f2f5',
-      minHeight: '100vh',
-      color: '#333'
-    }}>
+    <div
+      style={{
+        padding: '40px',
+        fontFamily:
+          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        background: '#f0f2f5',
+        minHeight: '100vh',
+        color: '#333',
+      }}
+    >
       <h1 style={{ textAlign: 'center', marginBottom: '10px' }}>💡 Lightbulb Coin</h1>
       <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px' }}>
         A simple MD5-based blockchain implementation.
@@ -381,7 +388,15 @@ const Completion14 = () => {
         <div style={cardStyle}>
           <h3>💰 Wallets</h3>
           {Object.entries(wallets).map(([name, balance]) => (
-            <div key={name} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #eee' }}>
+            <div
+              key={name}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '8px 0',
+                borderBottom: '1px solid #eee',
+              }}
+            >
               <strong>{name}</strong>
               <span>{balance} 💡</span>
             </div>
@@ -392,7 +407,7 @@ const Completion14 = () => {
         <div style={cardStyle}>
           <h3>💸 Make Transaction</h3>
           <TransactionForm
-            wallets={Object.keys(wallets).filter(w => w !== 'Miner')} // Miner usually just receives
+            wallets={Object.keys(wallets).filter((w) => w !== 'Miner')} // Miner usually just receives
             onSubmit={addTransaction}
             disabled={isMining}
           />
@@ -405,7 +420,7 @@ const Completion14 = () => {
             {pendingTransactions.length === 0 ? (
               <p style={{ color: '#999', fontStyle: 'italic' }}>No pending transactions</p>
             ) : (
-              pendingTransactions.map(tx => (
+              pendingTransactions.map((tx) => (
                 <div key={tx.id} style={{ fontSize: '14px', marginBottom: '5px' }}>
                   {tx.sender} ➝ {tx.recipient}: <strong>{tx.amount} 💡</strong>
                 </div>
@@ -425,27 +440,35 @@ const Completion14 = () => {
               borderRadius: '5px',
               cursor: isMining ? 'not-allowed' : 'pointer',
               fontWeight: 'bold',
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
             }}
           >
             {isMining ? '⛏️ Mining...' : '⛏️ Mine Transactions'}
           </button>
-          {miningStatus && <div style={{ fontSize: '12px', marginTop: '10px', color: '#666' }}>{miningStatus}</div>}
+          {miningStatus && (
+            <div style={{ fontSize: '12px', marginTop: '10px', color: '#666' }}>{miningStatus}</div>
+          )}
         </div>
       </div>
 
       {/* Blockchain Display */}
       <h2 style={{ marginTop: '50px', marginLeft: '10px' }}>
         🔗 Blockchain
-        {!isChainValid && <span style={{ color: 'red', fontSize: '16px', marginLeft: '10px' }}>(Warning: Chain Invalid!)</span>}
+        {!isChainValid && (
+          <span style={{ color: 'red', fontSize: '16px', marginLeft: '10px' }}>
+            (Warning: Chain Invalid!)
+          </span>
+        )}
       </h2>
-      <div style={{
-        display: 'flex',
-        overflowX: 'auto',
-        padding: '20px 10px',
-        gap: '20px',
-        alignItems: 'center'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          overflowX: 'auto',
+          padding: '20px 10px',
+          gap: '20px',
+          alignItems: 'center',
+        }}
+      >
         {blockchain.map((block, i) => (
           <React.Fragment key={block.hash}>
             <div
@@ -458,21 +481,29 @@ const Completion14 = () => {
                 padding: '15px',
                 cursor: 'pointer',
                 boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                transition: 'transform 0.2s'
+                transition: 'transform 0.2s',
               }}
             >
-              <div style={{ fontWeight: 'bold', borderBottom: '1px solid #eee', paddingBottom: '5px', marginBottom: '5px' }}>
+              <div
+                style={{
+                  fontWeight: 'bold',
+                  borderBottom: '1px solid #eee',
+                  paddingBottom: '5px',
+                  marginBottom: '5px',
+                }}
+              >
                 Block #{block.index}
               </div>
               <div style={{ fontSize: '12px', color: '#666' }}>
                 <div>Nonce: {block.nonce}</div>
-                <div>Hash: <span style={{ fontFamily: 'monospace' }}>{block.hash.substring(0, 8)}...</span></div>
+                <div>
+                  Hash:{' '}
+                  <span style={{ fontFamily: 'monospace' }}>{block.hash.substring(0, 8)}...</span>
+                </div>
                 <div>Txns: {block.transactions.length}</div>
               </div>
             </div>
-            {i < blockchain.length - 1 && (
-              <div style={{ fontSize: '24px', color: '#ccc' }}>➜</div>
-            )}
+            {i < blockchain.length - 1 && <div style={{ fontSize: '24px', color: '#ccc' }}>➜</div>}
           </React.Fragment>
         ))}
       </div>
@@ -481,11 +512,21 @@ const Completion14 = () => {
       {selectedBlock && (
         <div style={{ ...cardStyle, marginTop: '20px', width: '100%', boxSizing: 'border-box' }}>
           <h3>📦 Block #{selectedBlock.index} Details</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '10px', fontSize: '14px' }}>
-            <strong>Hash:</strong> <span style={{ fontFamily: 'monospace' }}>{selectedBlock.hash}</span>
-            <strong>Prev Hash:</strong> <span style={{ fontFamily: 'monospace' }}>{selectedBlock.previousHash}</span>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '100px 1fr',
+              gap: '10px',
+              fontSize: '14px',
+            }}
+          >
+            <strong>Hash:</strong>{' '}
+            <span style={{ fontFamily: 'monospace' }}>{selectedBlock.hash}</span>
+            <strong>Prev Hash:</strong>{' '}
+            <span style={{ fontFamily: 'monospace' }}>{selectedBlock.previousHash}</span>
             <strong>Nonce:</strong> <span>{selectedBlock.nonce}</span>
-            <strong>Timestamp:</strong> <span>{new Date(selectedBlock.timestamp).toLocaleString()}</span>
+            <strong>Timestamp:</strong>{' '}
+            <span>{new Date(selectedBlock.timestamp).toLocaleString()}</span>
           </div>
 
           <h4 style={{ marginTop: '20px' }}>Transactions</h4>
@@ -502,14 +543,23 @@ const Completion14 = () => {
                 </tr>
               </thead>
               <tbody>
-                {selectedBlock.transactions.map(tx => (
+                {selectedBlock.transactions.map((tx) => (
                   <tr key={tx.id} style={{ borderBottom: '1px solid #eee' }}>
                     <td style={{ padding: '8px' }}>{tx.sender}</td>
                     <td style={{ padding: '8px' }}>{tx.recipient}</td>
-                    <td style={{ padding: '8px', fontWeight: 'bold', color: tx.type === 'reward' ? '#2196F3' : 'inherit' }}>
-                      {tx.type === 'reward' ? '+' : ''}{tx.amount} 💡
+                    <td
+                      style={{
+                        padding: '8px',
+                        fontWeight: 'bold',
+                        color: tx.type === 'reward' ? '#2196F3' : 'inherit',
+                      }}
+                    >
+                      {tx.type === 'reward' ? '+' : ''}
+                      {tx.amount} 💡
                     </td>
-                    <td style={{ padding: '8px', fontFamily: 'monospace', color: '#888' }}>{tx.id.toString().substring(0, 8)}...</td>
+                    <td style={{ padding: '8px', fontFamily: 'monospace', color: '#888' }}>
+                      {tx.id.toString().substring(0, 8)}...
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -530,7 +580,7 @@ const TransactionForm = ({ wallets, onSubmit, disabled }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (sender === recipient) {
-      alert("Cannot send to self!");
+      alert('Cannot send to self!');
       return;
     }
     onSubmit(sender, recipient, Number(amount));
@@ -540,27 +590,35 @@ const TransactionForm = ({ wallets, onSubmit, disabled }) => {
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <select
         value={sender}
-        onChange={e => setSender(e.target.value)}
+        onChange={(e) => setSender(e.target.value)}
         style={inputStyle}
         disabled={disabled}
       >
-        {wallets.map(w => <option key={w} value={w}>From: {w}</option>)}
+        {wallets.map((w) => (
+          <option key={w} value={w}>
+            From: {w}
+          </option>
+        ))}
       </select>
 
       <select
         value={recipient}
-        onChange={e => setRecipient(e.target.value)} // Simplified: assume can send to anyone in wallet list or Miner
+        onChange={(e) => setRecipient(e.target.value)} // Simplified: assume can send to anyone in wallet list or Miner
         style={inputStyle}
         disabled={disabled}
       >
-        {['Alice', 'Bob', 'Miner', 'Charlie'].map(w => <option key={w} value={w}>To: {w}</option>)}
+        {['Alice', 'Bob', 'Miner', 'Charlie'].map((w) => (
+          <option key={w} value={w}>
+            To: {w}
+          </option>
+        ))}
       </select>
 
       <input
         type="number"
         min="1"
         value={amount}
-        onChange={e => setAmount(e.target.value)}
+        onChange={(e) => setAmount(e.target.value)}
         placeholder="Amount"
         style={inputStyle}
         disabled={disabled}
@@ -576,7 +634,7 @@ const TransactionForm = ({ wallets, onSubmit, disabled }) => {
           border: 'none',
           borderRadius: '5px',
           cursor: disabled ? 'default' : 'pointer',
-          marginTop: '5px'
+          marginTop: '5px',
         }}
       >
         Send Coins
@@ -590,13 +648,13 @@ const cardStyle = {
   padding: '20px',
   borderRadius: '10px',
   boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-  width: '300px'
+  width: '300px',
 };
 
 const inputStyle = {
   padding: '8px',
   borderRadius: '4px',
-  border: '1px solid #ddd'
+  border: '1px solid #ddd',
 };
 
 export default Completion14;
