@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo } from 'react';
 
 const defaultCode = `function fibonacci(n) {
   if (n <= 1) return n;
@@ -96,10 +96,7 @@ const shapes = {
       const innerRadius = maxWidth / 4;
       const radius = i % 2 === 0 ? outerRadius : innerRadius;
       const y = i / rows;
-      const width = Math.max(
-        innerRadius,
-        (1 - Math.abs(y - 0.5) * 1.5) * radius * 2
-      );
+      const width = Math.max(innerRadius, (1 - Math.abs(y - 0.5) * 1.5) * radius * 2);
       result.push(Math.max(10, Math.round(width)));
     }
     return result;
@@ -150,42 +147,42 @@ const shapes = {
 // Tokenize code into meaningful parts
 const tokenize = (code) => {
   const tokens = [];
-  let current = "";
+  let current = '';
   let inString = false;
-  let stringChar = "";
+  let stringChar = '';
 
   for (let i = 0; i < code.length; i++) {
     const char = code[i];
 
     if (inString) {
       current += char;
-      if (char === stringChar && code[i - 1] !== "\\") {
+      if (char === stringChar && code[i - 1] !== '\\') {
         tokens.push(current);
-        current = "";
+        current = '';
         inString = false;
       }
-    } else if (char === '"' || char === "'" || char === "`") {
+    } else if (char === '"' || char === "'" || char === '`') {
       if (current) tokens.push(current);
       current = char;
       inString = true;
       stringChar = char;
     } else if (/\s/.test(char)) {
       if (current) tokens.push(current);
-      current = "";
+      current = '';
     } else if (/[{}()\[\];,.]/.test(char)) {
       if (current) tokens.push(current);
       tokens.push(char);
-      current = "";
+      current = '';
     } else if (/[+\-*/%=<>!&|^~?:]/.test(char)) {
       if (current && !/[+\-*/%=<>!&|^~?:]/.test(current[current.length - 1])) {
         tokens.push(current);
-        current = "";
+        current = '';
       }
       current += char;
     } else {
       if (current && /[+\-*/%=<>!&|^~?:]/.test(current[current.length - 1])) {
         tokens.push(current);
-        current = "";
+        current = '';
       }
       current += char;
     }
@@ -203,13 +200,9 @@ const formatCodeToShape = (code, shapeWidths, fontSize) => {
 
   const charWidth = fontSize * 0.6; // Approximate character width for monospace
 
-  for (
-    let row = 0;
-    row < shapeWidths.length && tokenIndex < tokens.length;
-    row++
-  ) {
+  for (let row = 0; row < shapeWidths.length && tokenIndex < tokens.length; row++) {
     const maxChars = Math.floor(shapeWidths[row] / charWidth);
-    let line = "";
+    let line = '';
     let lineChars = 0;
 
     while (tokenIndex < tokens.length) {
@@ -217,7 +210,7 @@ const formatCodeToShape = (code, shapeWidths, fontSize) => {
       const tokenLen = token.length + 1; // +1 for space
 
       if (lineChars + tokenLen <= maxChars || lineChars === 0) {
-        line += (line ? " " : "") + token;
+        line += (line ? ' ' : '') + token;
         lineChars += tokenLen;
         tokenIndex++;
       } else {
@@ -235,10 +228,8 @@ const formatCodeToShape = (code, shapeWidths, fontSize) => {
 
   // If we have remaining tokens, add them to extra rows
   while (tokenIndex < tokens.length) {
-    const maxChars = Math.floor(
-      shapeWidths[shapeWidths.length - 1] / charWidth
-    );
-    let line = "";
+    const maxChars = Math.floor(shapeWidths[shapeWidths.length - 1] / charWidth);
+    let line = '';
     let lineChars = 0;
 
     while (tokenIndex < tokens.length) {
@@ -246,7 +237,7 @@ const formatCodeToShape = (code, shapeWidths, fontSize) => {
       const tokenLen = token.length + 1;
 
       if (lineChars + tokenLen <= maxChars || lineChars === 0) {
-        line += (line ? " " : "") + token;
+        line += (line ? ' ' : '') + token;
         lineChars += tokenLen;
         tokenIndex++;
       } else {
@@ -266,78 +257,78 @@ const formatCodeToShape = (code, shapeWidths, fontSize) => {
 // Syntax highlighting colors
 const highlightToken = (token) => {
   const keywords = [
-    "function",
-    "const",
-    "let",
-    "var",
-    "if",
-    "else",
-    "return",
-    "class",
-    "constructor",
-    "new",
-    "this",
-    "for",
-    "while",
-    "do",
-    "switch",
-    "case",
-    "break",
-    "continue",
-    "try",
-    "catch",
-    "throw",
-    "async",
-    "await",
-    "import",
-    "export",
-    "default",
-    "from",
+    'function',
+    'const',
+    'let',
+    'var',
+    'if',
+    'else',
+    'return',
+    'class',
+    'constructor',
+    'new',
+    'this',
+    'for',
+    'while',
+    'do',
+    'switch',
+    'case',
+    'break',
+    'continue',
+    'try',
+    'catch',
+    'throw',
+    'async',
+    'await',
+    'import',
+    'export',
+    'default',
+    'from',
   ];
   const builtins = [
-    "Math",
-    "Array",
-    "Object",
-    "String",
-    "Number",
-    "Boolean",
-    "console",
-    "null",
-    "undefined",
-    "true",
-    "false",
+    'Math',
+    'Array',
+    'Object',
+    'String',
+    'Number',
+    'Boolean',
+    'console',
+    'null',
+    'undefined',
+    'true',
+    'false',
   ];
 
   if (keywords.includes(token)) {
-    return { color: "#c678dd", fontWeight: "bold" };
+    return { color: '#c678dd', fontWeight: 'bold' };
   }
   if (builtins.includes(token)) {
-    return { color: "#e5c07b" };
+    return { color: '#e5c07b' };
   }
   if (/^["'`].*["'`]$/.test(token)) {
-    return { color: "#98c379" };
+    return { color: '#98c379' };
   }
   if (/^\d+$/.test(token)) {
-    return { color: "#d19a66" };
+    return { color: '#d19a66' };
   }
   if (/^[+\-*/%=<>!&|^~?:]+$/.test(token)) {
-    return { color: "#56b6c2" };
+    return { color: '#56b6c2' };
   }
   if (/^[{}()\[\];,.]$/.test(token)) {
-    return { color: "#abb2bf" };
+    return { color: '#abb2bf' };
   }
   if (/^[a-z][a-zA-Z0-9]*$/.test(token) && token.length > 1) {
-    return { color: "#61afef" };
+    return { color: '#61afef' };
   }
   if (/^[A-Z][a-zA-Z0-9]*$/.test(token)) {
-    return { color: "#e5c07b" };
+    return { color: '#e5c07b' };
   }
-  return { color: "#abb2bf" };
+  return { color: '#abb2bf' };
 };
 
 const Completion6 = () => {
   const [code, setCode] = useState(defaultCode);
-  const [selectedShape, setSelectedShape] = useState("circle");
+  const [selectedShape, setSelectedShape] = useState('circle');
   const [rows, setRows] = useState(30);
   const [maxWidth, setMaxWidth] = useState(500);
   const [fontSize, setFontSize] = useState(12);
@@ -369,36 +360,35 @@ const Completion6 = () => {
   return (
     <div
       style={{
-        minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
-        padding: "20px",
-        fontFamily: "system-ui, -apple-system, sans-serif",
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+        padding: '20px',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
       }}
     >
       <div
         style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
+          maxWidth: '1400px',
+          margin: '0 auto',
         }}
       >
         <h1
           style={{
-            textAlign: "center",
-            color: "#fff",
-            marginBottom: "10px",
-            fontSize: "2.5rem",
-            textShadow: "0 0 20px rgba(100, 200, 255, 0.5)",
+            textAlign: 'center',
+            color: '#fff',
+            marginBottom: '10px',
+            fontSize: '2.5rem',
+            textShadow: '0 0 20px rgba(100, 200, 255, 0.5)',
           }}
         >
           ✨ Pretty Shape Code Formatter ✨
         </h1>
         <p
           style={{
-            textAlign: "center",
-            color: "#8892b0",
-            marginBottom: "30px",
-            fontSize: "1.1rem",
+            textAlign: 'center',
+            color: '#8892b0',
+            marginBottom: '30px',
+            fontSize: '1.1rem',
           }}
         >
           Transform your code into beautiful shapes
@@ -406,40 +396,38 @@ const Completion6 = () => {
 
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "30px",
-            marginBottom: "30px",
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '30px',
+            marginBottom: '30px',
           }}
         >
           {/* Input Panel */}
           <div
             style={{
-              background: "rgba(255, 255, 255, 0.05)",
-              borderRadius: "16px",
-              padding: "20px",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '16px',
+              padding: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
             }}
           >
-            <h3 style={{ color: "#fff", marginTop: 0, marginBottom: "15px" }}>
-              📝 Input Code
-            </h3>
+            <h3 style={{ color: '#fff', marginTop: 0, marginBottom: '15px' }}>📝 Input Code</h3>
             <textarea
               value={code}
               onChange={(e) => setCode(e.target.value)}
               style={{
-                width: "100%",
-                height: "300px",
-                background: "#1e1e1e",
-                color: "#d4d4d4",
-                border: "1px solid #444",
-                borderRadius: "8px",
-                padding: "15px",
+                width: '100%',
+                height: '300px',
+                background: '#1e1e1e',
+                color: '#d4d4d4',
+                border: '1px solid #444',
+                borderRadius: '8px',
+                padding: '15px',
                 fontFamily: '"Fira Code", "Consolas", monospace',
-                fontSize: "13px",
-                resize: "vertical",
-                outline: "none",
-                boxSizing: "border-box",
+                fontSize: '13px',
+                resize: 'vertical',
+                outline: 'none',
+                boxSizing: 'border-box',
               }}
               placeholder="Paste your code here..."
             />
@@ -448,27 +436,21 @@ const Completion6 = () => {
           {/* Controls Panel */}
           <div
             style={{
-              background: "rgba(255, 255, 255, 0.05)",
-              borderRadius: "16px",
-              padding: "20px",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '16px',
+              padding: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
             }}
           >
-            <h3 style={{ color: "#fff", marginTop: 0, marginBottom: "15px" }}>
-              ⚙️ Settings
-            </h3>
+            <h3 style={{ color: '#fff', marginTop: 0, marginBottom: '15px' }}>⚙️ Settings</h3>
 
-            <div style={{ marginBottom: "20px" }}>
-              <label
-                style={{ color: "#ccc", display: "block", marginBottom: "8px" }}
-              >
-                Shape:
-              </label>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ color: '#ccc', display: 'block', marginBottom: '8px' }}>Shape:</label>
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(4, 1fr)",
-                  gap: "8px",
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '8px',
                 }}
               >
                 {Object.keys(shapes).map((shape) => (
@@ -476,39 +458,37 @@ const Completion6 = () => {
                     key={shape}
                     onClick={() => setSelectedShape(shape)}
                     style={{
-                      padding: "10px",
+                      padding: '10px',
                       background:
                         selectedShape === shape
-                          ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                          : "rgba(255, 255, 255, 0.1)",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      textTransform: "capitalize",
-                      fontWeight: selectedShape === shape ? "bold" : "normal",
-                      transition: "all 0.2s ease",
+                          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                          : 'rgba(255, 255, 255, 0.1)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      textTransform: 'capitalize',
+                      fontWeight: selectedShape === shape ? 'bold' : 'normal',
+                      transition: 'all 0.2s ease',
                     }}
                   >
-                    {shape === "circle" && "⭕"}
-                    {shape === "triangle" && "🔺"}
-                    {shape === "diamond" && "💎"}
-                    {shape === "heart" && "❤️"}
-                    {shape === "star" && "⭐"}
-                    {shape === "hourglass" && "⏳"}
-                    {shape === "wave" && "🌊"}
-                    {shape === "tree" && "🎄"}
+                    {shape === 'circle' && '⭕'}
+                    {shape === 'triangle' && '🔺'}
+                    {shape === 'diamond' && '💎'}
+                    {shape === 'heart' && '❤️'}
+                    {shape === 'star' && '⭐'}
+                    {shape === 'hourglass' && '⏳'}
+                    {shape === 'wave' && '🌊'}
+                    {shape === 'tree' && '🎄'}
                     <br />
-                    <span style={{ fontSize: "11px" }}>{shape}</span>
+                    <span style={{ fontSize: '11px' }}>{shape}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            <div style={{ marginBottom: "15px" }}>
-              <label
-                style={{ color: "#ccc", display: "block", marginBottom: "5px" }}
-              >
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ color: '#ccc', display: 'block', marginBottom: '5px' }}>
                 Rows: {rows}
               </label>
               <input
@@ -517,14 +497,12 @@ const Completion6 = () => {
                 max="60"
                 value={rows}
                 onChange={(e) => setRows(Number(e.target.value))}
-                style={{ width: "100%", accentColor: "#667eea" }}
+                style={{ width: '100%', accentColor: '#667eea' }}
               />
             </div>
 
-            <div style={{ marginBottom: "15px" }}>
-              <label
-                style={{ color: "#ccc", display: "block", marginBottom: "5px" }}
-              >
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ color: '#ccc', display: 'block', marginBottom: '5px' }}>
                 Max Width: {maxWidth}px
               </label>
               <input
@@ -533,14 +511,12 @@ const Completion6 = () => {
                 max="800"
                 value={maxWidth}
                 onChange={(e) => setMaxWidth(Number(e.target.value))}
-                style={{ width: "100%", accentColor: "#667eea" }}
+                style={{ width: '100%', accentColor: '#667eea' }}
               />
             </div>
 
-            <div style={{ marginBottom: "15px" }}>
-              <label
-                style={{ color: "#ccc", display: "block", marginBottom: "5px" }}
-              >
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ color: '#ccc', display: 'block', marginBottom: '5px' }}>
                 Font Size: {fontSize}px
               </label>
               <input
@@ -549,18 +525,18 @@ const Completion6 = () => {
                 max="18"
                 value={fontSize}
                 onChange={(e) => setFontSize(Number(e.target.value))}
-                style={{ width: "100%", accentColor: "#667eea" }}
+                style={{ width: '100%', accentColor: '#667eea' }}
               />
             </div>
 
-            <div style={{ marginBottom: "15px" }}>
+            <div style={{ marginBottom: '15px' }}>
               <label
                 style={{
-                  color: "#ccc",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  cursor: "pointer",
+                  color: '#ccc',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  cursor: 'pointer',
                 }}
               >
                 <input
@@ -568,9 +544,9 @@ const Completion6 = () => {
                   checked={showOutline}
                   onChange={(e) => setShowOutline(e.target.checked)}
                   style={{
-                    accentColor: "#667eea",
-                    width: "18px",
-                    height: "18px",
+                    accentColor: '#667eea',
+                    width: '18px',
+                    height: '18px',
                   }}
                 />
                 Show Shape Outline
@@ -582,19 +558,19 @@ const Completion6 = () => {
         {/* Output Panel */}
         <div
           style={{
-            background: "rgba(0, 0, 0, 0.3)",
-            borderRadius: "16px",
-            padding: "30px",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            overflow: "auto",
+            background: 'rgba(0, 0, 0, 0.3)',
+            borderRadius: '16px',
+            padding: '30px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            overflow: 'auto',
           }}
         >
           <h3
             style={{
-              color: "#fff",
+              color: '#fff',
               marginTop: 0,
-              marginBottom: "20px",
-              textAlign: "center",
+              marginBottom: '20px',
+              textAlign: 'center',
             }}
           >
             🎨 Formatted Output
@@ -602,13 +578,13 @@ const Completion6 = () => {
 
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
               fontFamily: '"Fira Code", "Consolas", monospace',
               fontSize: `${fontSize}px`,
-              lineHeight: "1.4",
-              position: "relative",
+              lineHeight: '1.4',
+              position: 'relative',
             }}
           >
             {formattedLines.map((line, i) => (
@@ -616,29 +592,20 @@ const Completion6 = () => {
                 key={i}
                 style={{
                   width: `${line.width}px`,
-                  textAlign: "center",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  background: showOutline
-                    ? "rgba(102, 126, 234, 0.1)"
-                    : "transparent",
-                  borderLeft: showOutline
-                    ? "1px solid rgba(102, 126, 234, 0.3)"
-                    : "none",
-                  borderRight: showOutline
-                    ? "1px solid rgba(102, 126, 234, 0.3)"
-                    : "none",
-                  borderTop:
-                    showOutline && i === 0
-                      ? "1px solid rgba(102, 126, 234, 0.3)"
-                      : "none",
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  background: showOutline ? 'rgba(102, 126, 234, 0.1)' : 'transparent',
+                  borderLeft: showOutline ? '1px solid rgba(102, 126, 234, 0.3)' : 'none',
+                  borderRight: showOutline ? '1px solid rgba(102, 126, 234, 0.3)' : 'none',
+                  borderTop: showOutline && i === 0 ? '1px solid rgba(102, 126, 234, 0.3)' : 'none',
                   borderBottom:
                     showOutline && i === formattedLines.length - 1
-                      ? "1px solid rgba(102, 126, 234, 0.3)"
-                      : "none",
-                  padding: "1px 5px",
-                  boxSizing: "border-box",
+                      ? '1px solid rgba(102, 126, 234, 0.3)'
+                      : 'none',
+                  padding: '1px 5px',
+                  boxSizing: 'border-box',
                 }}
               >
                 {renderHighlightedLine(line.text)}
@@ -650,10 +617,10 @@ const Completion6 = () => {
         {/* Footer */}
         <p
           style={{
-            textAlign: "center",
-            color: "#5a6a8a",
-            marginTop: "30px",
-            fontSize: "0.9rem",
+            textAlign: 'center',
+            color: '#5a6a8a',
+            marginTop: '30px',
+            fontSize: '0.9rem',
           }}
         >
           Weekly Challenge #6 - Pretty Shape | Opus 4.5

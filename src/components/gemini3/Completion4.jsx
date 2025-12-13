@@ -6,36 +6,36 @@ import { useSearchParams } from 'react-router-dom';
 const generateKey = async () => {
   return window.crypto.subtle.generateKey(
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       length: 256,
     },
     true,
-    ["encrypt", "decrypt"]
+    ['encrypt', 'decrypt']
   );
 };
 
 const exportKey = async (key) => {
-  const exported = await window.crypto.subtle.exportKey("jwk", key);
+  const exported = await window.crypto.subtle.exportKey('jwk', key);
   return JSON.stringify(exported);
 };
 
 const importKey = async (jwkString) => {
   const jwk = JSON.parse(jwkString);
   return window.crypto.subtle.importKey(
-    "jwk",
+    'jwk',
     jwk,
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       length: 256,
     },
     true,
-    ["encrypt", "decrypt"]
+    ['encrypt', 'decrypt']
   );
 };
 
 const compress = async (string) => {
   const stream = new Blob([string]).stream();
-  const compressedStream = stream.pipeThrough(new CompressionStream("gzip"));
+  const compressedStream = stream.pipeThrough(new CompressionStream('gzip'));
   const response = await new Response(compressedStream);
   const blob = await response.blob();
   return new Uint8Array(await blob.arrayBuffer());
@@ -43,7 +43,7 @@ const compress = async (string) => {
 
 const decompress = async (bytes) => {
   const stream = new Blob([bytes]).stream();
-  const decompressedStream = stream.pipeThrough(new DecompressionStream("gzip"));
+  const decompressedStream = stream.pipeThrough(new DecompressionStream('gzip'));
   const response = await new Response(decompressedStream);
   return await response.text();
 };
@@ -53,7 +53,7 @@ const encrypt = async (data, key) => {
   const encodedData = new TextEncoder().encode(data);
   const encryptedContent = await window.crypto.subtle.encrypt(
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       iv: iv,
     },
     key,
@@ -72,7 +72,7 @@ const decrypt = async (data, key) => {
   const encryptedContent = data.slice(12);
   const decryptedContent = await window.crypto.subtle.decrypt(
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       iv: iv,
     },
     key,
@@ -116,17 +116,21 @@ const ThreadNode = ({ node, onReply }) => {
   };
 
   return (
-    <div style={{ 
-      borderLeft: '2px solid #ccc', 
-      paddingLeft: '15px', 
-      marginTop: '10px',
-      marginBottom: '10px'
-    }}>
+    <div
+      style={{
+        borderLeft: '2px solid #ccc',
+        paddingLeft: '15px',
+        marginTop: '10px',
+        marginBottom: '10px',
+      }}
+    >
       <div style={{ backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '5px' }}>
         <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{node.author}</div>
         <div style={{ marginBottom: '10px' }}>{node.content}</div>
-        <div style={{ fontSize: '0.8em', color: '#666' }}>{new Date(node.timestamp).toLocaleString()}</div>
-        <button 
+        <div style={{ fontSize: '0.8em', color: '#666' }}>
+          {new Date(node.timestamp).toLocaleString()}
+        </div>
+        <button
           onClick={() => setIsReplying(!isReplying)}
           style={{ marginTop: '5px', fontSize: '0.8em', cursor: 'pointer' }}
         >
@@ -155,9 +159,8 @@ const ThreadNode = ({ node, onReply }) => {
         </form>
       )}
 
-      {node.replies && node.replies.map(reply => (
-        <ThreadNode key={reply.id} node={reply} onReply={onReply} />
-      ))}
+      {node.replies &&
+        node.replies.map((reply) => <ThreadNode key={reply.id} node={reply} onReply={onReply} />)}
     </div>
   );
 };
@@ -176,7 +179,7 @@ const Completion4 = () => {
     const init = async () => {
       try {
         const dataParam = searchParams.get('data');
-        
+
         if (!dataParam) {
           // No data, start fresh
           const newKey = await generateKey();
@@ -189,7 +192,7 @@ const Completion4 = () => {
         // Format: keyJWK|encryptedData
         const parts = dataParam.split('|');
         if (parts.length !== 2) {
-          throw new Error("Invalid URL format");
+          throw new Error('Invalid URL format');
         }
 
         // Decode key
@@ -201,24 +204,23 @@ const Completion4 = () => {
 
         // Decode data
         const encryptedBytes = base64ToBytes(parts[1]);
-        
+
         // Decrypt
         const iv = encryptedBytes.slice(0, 12);
         const ciphertext = encryptedBytes.slice(12);
         const decryptedBuffer = await window.crypto.subtle.decrypt(
-          { name: "AES-GCM", iv: iv },
+          { name: 'AES-GCM', iv: iv },
           loadedKey,
           ciphertext
         );
-        
+
         // Decompress
         const jsonString = await decompress(decryptedBuffer);
         setThread(JSON.parse(jsonString));
         setLoading(false);
-
       } catch (err) {
-        console.error("Failed to load thread:", err);
-        setError("Failed to load thread. The URL might be corrupted.");
+        console.error('Failed to load thread:', err);
+        setError('Failed to load thread. The URL might be corrupted.');
         setLoading(false);
         // Fallback to new thread
         const newKey = await generateKey();
@@ -228,45 +230,47 @@ const Completion4 = () => {
     };
 
     init();
-  }, []); // Run once on mount. 
+  }, []); // Run once on mount.
   // Note: If URL changes externally (back button), we might need to listen to it.
-  // But for now, let's assume simple flow. 
+  // But for now, let's assume simple flow.
   // Actually, searchParams change should trigger re-init if we put it in dependency?
   // But init sets state, which might cause loops if we are not careful.
   // Let's keep it simple: Load once. If user navigates back, the component remounts.
 
   // Update URL when thread changes
-  const updateUrl = useCallback(async (newThread, currentKey) => {
-    if (!currentKey) return;
+  const updateUrl = useCallback(
+    async (newThread, currentKey) => {
+      if (!currentKey) return;
 
-    try {
-      const jsonString = JSON.stringify(newThread);
-      const compressedBytes = await compress(jsonString);
-      
-      // Encrypt
-      const iv = window.crypto.getRandomValues(new Uint8Array(12));
-      const encryptedContent = await window.crypto.subtle.encrypt(
-        { name: "AES-GCM", iv: iv },
-        currentKey,
-        compressedBytes
-      );
-      
-      const combined = new Uint8Array(iv.length + encryptedContent.byteLength);
-      combined.set(iv);
-      combined.set(new Uint8Array(encryptedContent), iv.length);
-      
-      const encryptedBase64 = bytesToBase64(combined);
-      const keyJson = await exportKey(currentKey);
-      const keyBase64 = btoa(keyJson);
-      
-      const dataString = `${keyBase64}|${encryptedBase64}`;
-      setSearchParams({ data: dataString });
-      
-    } catch (e) {
-      console.error("Failed to update URL:", e);
-      setError("Failed to save changes to URL. Data might be too large.");
-    }
-  }, [setSearchParams]);
+      try {
+        const jsonString = JSON.stringify(newThread);
+        const compressedBytes = await compress(jsonString);
+
+        // Encrypt
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+        const encryptedContent = await window.crypto.subtle.encrypt(
+          { name: 'AES-GCM', iv: iv },
+          currentKey,
+          compressedBytes
+        );
+
+        const combined = new Uint8Array(iv.length + encryptedContent.byteLength);
+        combined.set(iv);
+        combined.set(new Uint8Array(encryptedContent), iv.length);
+
+        const encryptedBase64 = bytesToBase64(combined);
+        const keyJson = await exportKey(currentKey);
+        const keyBase64 = btoa(keyJson);
+
+        const dataString = `${keyBase64}|${encryptedBase64}`;
+        setSearchParams({ data: dataString });
+      } catch (e) {
+        console.error('Failed to update URL:', e);
+        setError('Failed to save changes to URL. Data might be too large.');
+      }
+    },
+    [setSearchParams]
+  );
 
   const addPost = (content, author) => {
     const newPost = {
@@ -274,7 +278,7 @@ const Completion4 = () => {
       author,
       content,
       timestamp: Date.now(),
-      replies: []
+      replies: [],
     };
     const newThread = [...(thread || []), newPost];
     setThread(newThread);
@@ -283,23 +287,26 @@ const Completion4 = () => {
 
   const addReply = (parentId, content, author) => {
     const addReplyRecursive = (nodes) => {
-      return nodes.map(node => {
+      return nodes.map((node) => {
         if (node.id === parentId) {
           return {
             ...node,
-            replies: [...node.replies, {
-              id: Date.now().toString(),
-              author,
-              content,
-              timestamp: Date.now(),
-              replies: []
-            }]
+            replies: [
+              ...node.replies,
+              {
+                id: Date.now().toString(),
+                author,
+                content,
+                timestamp: Date.now(),
+                replies: [],
+              },
+            ],
           };
         }
         if (node.replies) {
           return {
             ...node,
-            replies: addReplyRecursive(node.replies)
+            replies: addReplyRecursive(node.replies),
           };
         }
         return node;
@@ -322,15 +329,29 @@ const Completion4 = () => {
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', fontFamily: 'system-ui, sans-serif' }}>
+    <div
+      style={{
+        padding: '20px',
+        maxWidth: '800px',
+        margin: '0 auto',
+        fontFamily: 'system-ui, sans-serif',
+      }}
+    >
       <h1>Encrypted Thread</h1>
       <p style={{ fontSize: '0.9em', color: '#555' }}>
-        This thread is stored entirely in the URL, compressed and encrypted. 
-        Share the URL to share the thread.
+        This thread is stored entirely in the URL, compressed and encrypted. Share the URL to share
+        the thread.
       </p>
 
-      {(!thread || thread.length === 0) ? (
-        <div style={{ marginTop: '20px', padding: '20px', border: '1px solid #eee', borderRadius: '8px' }}>
+      {!thread || thread.length === 0 ? (
+        <div
+          style={{
+            marginTop: '20px',
+            padding: '20px',
+            border: '1px solid #eee',
+            borderRadius: '8px',
+          }}
+        >
           <h3>Start a new thread</h3>
           <form onSubmit={handleCreateThread}>
             <div style={{ marginBottom: '10px' }}>
@@ -340,7 +361,12 @@ const Completion4 = () => {
                 value={newThreadAuthor}
                 onChange={(e) => setNewThreadAuthor(e.target.value)}
                 required
-                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                }}
               />
             </div>
             <div style={{ marginBottom: '10px' }}>
@@ -350,18 +376,23 @@ const Completion4 = () => {
                 onChange={(e) => setNewThreadContent(e.target.value)}
                 required
                 rows={4}
-                style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                }}
               />
             </div>
-            <button 
+            <button
               type="submit"
-              style={{ 
-                padding: '10px 20px', 
-                backgroundColor: '#007bff', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: '4px', 
-                cursor: 'pointer' 
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
               }}
             >
               Post Thread
@@ -370,10 +401,10 @@ const Completion4 = () => {
         </div>
       ) : (
         <div>
-          {thread.map(node => (
+          {thread.map((node) => (
             <ThreadNode key={node.id} node={node} onReply={addReply} />
           ))}
-          
+
           <div style={{ marginTop: '40px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
             <h3>Start a new conversation</h3>
             <form onSubmit={handleCreateThread}>

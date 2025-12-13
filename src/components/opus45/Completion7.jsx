@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 // Sample data: Scores over time for different entities
 const generateSampleData = () => {
   const entities = [
-    { id: 1, name: "Magnus Carlsen", color: "#FF6B6B" },
-    { id: 2, name: "Garry Kasparov", color: "#4ECDC4" },
-    { id: 3, name: "Bobby Fischer", color: "#45B7D1" },
-    { id: 4, name: "Anatoly Karpov", color: "#96CEB4" },
-    { id: 5, name: "Viswanathan Anand", color: "#FFEAA7" },
-    { id: 6, name: "Vladimir Kramnik", color: "#DDA0DD" },
-    { id: 7, name: "Mikhail Tal", color: "#98D8C8" },
-    { id: 8, name: "Jose Capablanca", color: "#F7DC6F" },
-    { id: 9, name: "Emanuel Lasker", color: "#BB8FCE" },
-    { id: 10, name: "Fabiano Caruana", color: "#85C1E9" },
+    { id: 1, name: 'Magnus Carlsen', color: '#FF6B6B' },
+    { id: 2, name: 'Garry Kasparov', color: '#4ECDC4' },
+    { id: 3, name: 'Bobby Fischer', color: '#45B7D1' },
+    { id: 4, name: 'Anatoly Karpov', color: '#96CEB4' },
+    { id: 5, name: 'Viswanathan Anand', color: '#FFEAA7' },
+    { id: 6, name: 'Vladimir Kramnik', color: '#DDA0DD' },
+    { id: 7, name: 'Mikhail Tal', color: '#98D8C8' },
+    { id: 8, name: 'Jose Capablanca', color: '#F7DC6F' },
+    { id: 9, name: 'Emanuel Lasker', color: '#BB8FCE' },
+    { id: 10, name: 'Fabiano Caruana', color: '#85C1E9' },
   ];
 
   // Generate timeline data from 1970 to 2024
@@ -28,53 +28,41 @@ const generateSampleData = () => {
       let variation = Math.random() * 100 - 50;
 
       switch (entity.name) {
-        case "Bobby Fischer":
+        case 'Bobby Fischer':
           baseScore =
-            year >= 1970 && year <= 1975
-              ? 2780 + (year - 1970) * 5
-              : 2650 - (year - 1975) * 10;
+            year >= 1970 && year <= 1975 ? 2780 + (year - 1970) * 5 : 2650 - (year - 1975) * 10;
           break;
-        case "Garry Kasparov":
+        case 'Garry Kasparov':
           baseScore =
-            year >= 1985 && year <= 2005
-              ? 2800 + Math.sin((year - 1985) * 0.3) * 50
-              : 2600;
+            year >= 1985 && year <= 2005 ? 2800 + Math.sin((year - 1985) * 0.3) * 50 : 2600;
           break;
-        case "Anatoly Karpov":
+        case 'Anatoly Karpov':
           baseScore =
-            year >= 1975 && year <= 1995
-              ? 2750 + Math.sin((year - 1975) * 0.2) * 40
-              : 2550;
+            year >= 1975 && year <= 1995 ? 2750 + Math.sin((year - 1975) * 0.2) * 40 : 2550;
           break;
-        case "Magnus Carlsen":
+        case 'Magnus Carlsen':
           baseScore = year >= 2004 ? 2600 + (year - 2004) * 15 : 2400;
           if (year >= 2013) baseScore = Math.min(baseScore, 2880);
           break;
-        case "Viswanathan Anand":
+        case 'Viswanathan Anand':
           baseScore =
-            year >= 1988 && year <= 2015
-              ? 2750 + Math.sin((year - 1988) * 0.25) * 50
-              : 2600;
+            year >= 1988 && year <= 2015 ? 2750 + Math.sin((year - 1988) * 0.25) * 50 : 2600;
           break;
-        case "Vladimir Kramnik":
+        case 'Vladimir Kramnik':
           baseScore =
-            year >= 1992 && year <= 2018
-              ? 2780 + Math.sin((year - 1992) * 0.2) * 40
-              : 2550;
+            year >= 1992 && year <= 2018 ? 2780 + Math.sin((year - 1992) * 0.2) * 40 : 2550;
           break;
-        case "Mikhail Tal":
+        case 'Mikhail Tal':
           baseScore =
-            year >= 1970 && year <= 1990
-              ? 2650 + Math.sin((year - 1970) * 0.3) * 50
-              : 2500;
+            year >= 1970 && year <= 1990 ? 2650 + Math.sin((year - 1970) * 0.3) * 50 : 2500;
           break;
-        case "Jose Capablanca":
+        case 'Jose Capablanca':
           baseScore = year <= 1980 ? 2600 - (year - 1970) * 20 : 2400;
           break;
-        case "Emanuel Lasker":
+        case 'Emanuel Lasker':
           baseScore = year <= 1980 ? 2550 - (year - 1970) * 25 : 2300;
           break;
-        case "Fabiano Caruana":
+        case 'Fabiano Caruana':
           baseScore = year >= 2007 ? 2500 + (year - 2007) * 20 : 2400;
           if (year >= 2018) baseScore = Math.min(baseScore, 2840);
           break;
@@ -159,166 +147,166 @@ const Completion7 = () => {
   const styles = {
     container: {
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      maxWidth: "1000px",
-      margin: "0 auto",
-      padding: "20px",
-      background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)",
-      minHeight: "100vh",
-      color: "#fff",
+      maxWidth: '1000px',
+      margin: '0 auto',
+      padding: '20px',
+      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+      minHeight: '100vh',
+      color: '#fff',
     },
     header: {
-      textAlign: "center",
-      marginBottom: "30px",
+      textAlign: 'center',
+      marginBottom: '30px',
     },
     title: {
-      fontSize: "2.5rem",
-      fontWeight: "bold",
-      background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      marginBottom: "10px",
+      fontSize: '2.5rem',
+      fontWeight: 'bold',
+      background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      marginBottom: '10px',
     },
     subtitle: {
-      fontSize: "1rem",
-      color: "#aaa",
+      fontSize: '1rem',
+      color: '#aaa',
     },
     yearDisplay: {
-      fontSize: "4rem",
-      fontWeight: "bold",
-      textAlign: "center",
-      marginBottom: "20px",
-      color: "#667eea",
-      textShadow: "0 0 20px rgba(102, 126, 234, 0.5)",
+      fontSize: '4rem',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: '20px',
+      color: '#667eea',
+      textShadow: '0 0 20px rgba(102, 126, 234, 0.5)',
     },
     chartContainer: {
-      background: "rgba(255, 255, 255, 0.05)",
-      borderRadius: "15px",
-      padding: "30px",
-      marginBottom: "20px",
-      backdropFilter: "blur(10px)",
-      border: "1px solid rgba(255, 255, 255, 0.1)",
+      background: 'rgba(255, 255, 255, 0.05)',
+      borderRadius: '15px',
+      padding: '30px',
+      marginBottom: '20px',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
     },
     barWrapper: {
-      display: "flex",
-      alignItems: "center",
-      marginBottom: "12px",
-      height: "45px",
-      transition: "all 0.4s ease-out",
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: '12px',
+      height: '45px',
+      transition: 'all 0.4s ease-out',
     },
     rank: {
-      width: "30px",
-      fontSize: "1.2rem",
-      fontWeight: "bold",
-      color: "#888",
-      textAlign: "center",
+      width: '30px',
+      fontSize: '1.2rem',
+      fontWeight: 'bold',
+      color: '#888',
+      textAlign: 'center',
     },
     name: {
-      width: "150px",
-      fontSize: "0.9rem",
-      fontWeight: "600",
-      paddingRight: "15px",
-      textAlign: "right",
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
+      width: '150px',
+      fontSize: '0.9rem',
+      fontWeight: '600',
+      paddingRight: '15px',
+      textAlign: 'right',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
     barContainer: {
       flex: 1,
-      height: "35px",
-      background: "rgba(255, 255, 255, 0.1)",
-      borderRadius: "8px",
-      overflow: "hidden",
-      position: "relative",
+      height: '35px',
+      background: 'rgba(255, 255, 255, 0.1)',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      position: 'relative',
     },
     bar: {
-      height: "100%",
-      borderRadius: "8px",
-      transition: "width 0.4s ease-out",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "flex-end",
-      paddingRight: "10px",
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
+      height: '100%',
+      borderRadius: '8px',
+      transition: 'width 0.4s ease-out',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingRight: '10px',
+      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
     },
     score: {
-      fontSize: "0.85rem",
-      fontWeight: "bold",
-      color: "#fff",
-      textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
-      minWidth: "50px",
-      textAlign: "right",
+      fontSize: '0.85rem',
+      fontWeight: 'bold',
+      color: '#fff',
+      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
+      minWidth: '50px',
+      textAlign: 'right',
     },
     controls: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: "15px",
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: "20px",
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '15px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: '20px',
     },
     button: {
-      padding: "12px 30px",
-      fontSize: "1rem",
-      fontWeight: "bold",
-      border: "none",
-      borderRadius: "25px",
-      cursor: "pointer",
-      transition: "all 0.3s ease",
-      background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
-      color: "#fff",
-      boxShadow: "0 4px 15px rgba(102, 126, 234, 0.4)",
+      padding: '12px 30px',
+      fontSize: '1rem',
+      fontWeight: 'bold',
+      border: 'none',
+      borderRadius: '25px',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+      background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+      color: '#fff',
+      boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
     },
     buttonHover: {
-      transform: "translateY(-2px)",
-      boxShadow: "0 6px 20px rgba(102, 126, 234, 0.6)",
+      transform: 'translateY(-2px)',
+      boxShadow: '0 6px 20px rgba(102, 126, 234, 0.6)',
     },
     secondaryButton: {
-      padding: "12px 25px",
-      fontSize: "1rem",
-      border: "none",
-      borderRadius: "25px",
-      cursor: "pointer",
-      background: "rgba(255, 255, 255, 0.1)",
-      color: "#fff",
-      transition: "all 0.3s ease",
+      padding: '12px 25px',
+      fontSize: '1rem',
+      border: 'none',
+      borderRadius: '25px',
+      cursor: 'pointer',
+      background: 'rgba(255, 255, 255, 0.1)',
+      color: '#fff',
+      transition: 'all 0.3s ease',
     },
     slider: {
-      width: "100%",
-      height: "8px",
-      borderRadius: "4px",
-      background: "rgba(255, 255, 255, 0.2)",
-      outline: "none",
-      cursor: "pointer",
-      WebkitAppearance: "none",
+      width: '100%',
+      height: '8px',
+      borderRadius: '4px',
+      background: 'rgba(255, 255, 255, 0.2)',
+      outline: 'none',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
     },
     sliderContainer: {
-      width: "100%",
-      padding: "0 10px",
+      width: '100%',
+      padding: '0 10px',
     },
     settingsRow: {
-      display: "flex",
-      gap: "30px",
-      justifyContent: "center",
-      alignItems: "center",
-      flexWrap: "wrap",
+      display: 'flex',
+      gap: '30px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexWrap: 'wrap',
     },
     settingGroup: {
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
     },
     label: {
-      fontSize: "0.9rem",
-      color: "#aaa",
+      fontSize: '0.9rem',
+      color: '#aaa',
     },
     select: {
-      padding: "8px 15px",
-      borderRadius: "8px",
-      border: "none",
-      background: "rgba(255, 255, 255, 0.1)",
-      color: "#fff",
-      cursor: "pointer",
-      fontSize: "0.9rem",
+      padding: '8px 15px',
+      borderRadius: '8px',
+      border: 'none',
+      background: 'rgba(255, 255, 255, 0.1)',
+      color: '#fff',
+      cursor: 'pointer',
+      fontSize: '0.9rem',
     },
   };
 
@@ -326,9 +314,7 @@ const Completion7 = () => {
     <div style={styles.container}>
       <div style={styles.header}>
         <h1 style={styles.title}>🏆 Chess Rating Timeline</h1>
-        <p style={styles.subtitle}>
-          Top Chess Players by ELO Rating (1970-2024)
-        </p>
+        <p style={styles.subtitle}>Top Chess Players by ELO Rating (1970-2024)</p>
       </div>
 
       <div style={styles.yearDisplay}>{currentData.year}</div>
@@ -369,24 +355,24 @@ const Completion7 = () => {
           style={styles.button}
           onClick={togglePlay}
           onMouseEnter={(e) => {
-            e.target.style.transform = "translateY(-2px)";
-            e.target.style.boxShadow = "0 6px 20px rgba(102, 126, 234, 0.6)";
+            e.target.style.transform = 'translateY(-2px)';
+            e.target.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.6)';
           }}
           onMouseLeave={(e) => {
-            e.target.style.transform = "translateY(0)";
-            e.target.style.boxShadow = "0 4px 15px rgba(102, 126, 234, 0.4)";
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
           }}
         >
-          {isPlaying ? "⏸️ Pause" : "▶️ Play"}
+          {isPlaying ? '⏸️ Pause' : '▶️ Play'}
         </button>
         <button
           style={styles.secondaryButton}
           onClick={reset}
           onMouseEnter={(e) => {
-            e.target.style.background = "rgba(255, 255, 255, 0.2)";
+            e.target.style.background = 'rgba(255, 255, 255, 0.2)';
           }}
           onMouseLeave={(e) => {
-            e.target.style.background = "rgba(255, 255, 255, 0.1)";
+            e.target.style.background = 'rgba(255, 255, 255, 0.1)';
           }}
         >
           🔄 Reset
@@ -404,7 +390,7 @@ const Completion7 = () => {
         />
       </div>
 
-      <div style={{ ...styles.controls, marginTop: "20px" }}>
+      <div style={{ ...styles.controls, marginTop: '20px' }}>
         <div style={styles.settingsRow}>
           <div style={styles.settingGroup}>
             <span style={styles.label}>Speed:</span>
@@ -436,10 +422,10 @@ const Completion7 = () => {
 
       <div
         style={{
-          textAlign: "center",
-          marginTop: "30px",
-          color: "#666",
-          fontSize: "0.8rem",
+          textAlign: 'center',
+          marginTop: '30px',
+          color: '#666',
+          fontSize: '0.8rem',
         }}
       >
         <p>📊 Animated Bar Chart Race - Scores Timeline</p>

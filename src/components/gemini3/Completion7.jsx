@@ -41,14 +41,14 @@ const Completion7 = () => {
 
   // Simulate tick
   const tick = () => {
-    setData(prevData => {
-      return prevData.map(item => ({
+    setData((prevData) => {
+      return prevData.map((item) => ({
         ...item,
         // Randomly increase score, weighted slightly by current rank to make it interesting but allowing upsets
-        score: item.score + Math.floor(Math.random() * 50)
+        score: item.score + Math.floor(Math.random() * 50),
       }));
     });
-    setYear(prev => prev + 1);
+    setYear((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -73,22 +73,33 @@ const Completion7 = () => {
   topItems.forEach((item, index) => idToRank.set(item.id, index));
 
   return (
-    <div style={{
-      fontFamily: "'Inter', system-ui, sans-serif",
-      backgroundColor: '#1a1a1a',
-      color: '#ffffff',
-      padding: '40px',
-      borderRadius: '12px',
-      minHeight: '600px',
-      maxWidth: '900px',
-      margin: '0 auto',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+    <div
+      style={{
+        fontFamily: "'Inter', system-ui, sans-serif",
+        backgroundColor: '#1a1a1a',
+        color: '#ffffff',
+        padding: '40px',
+        borderRadius: '12px',
+        minHeight: '600px',
+        maxWidth: '900px',
+        margin: '0 auto',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '30px',
+        }}
+      >
         <div>
           <h2 style={{ margin: 0, fontSize: '2rem', fontWeight: 700 }}>Popularity Timeline</h2>
-          <div style={{ fontSize: '4rem', fontWeight: 800, color: '#444', marginTop: '10px' }}>{year}</div>
+          <div style={{ fontSize: '4rem', fontWeight: 800, color: '#444', marginTop: '10px' }}>
+            {year}
+          </div>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <button
@@ -102,7 +113,7 @@ const Completion7 = () => {
               cursor: 'pointer',
               fontWeight: 600,
               fontSize: '1rem',
-              transition: 'background 0.2s'
+              transition: 'background 0.2s',
             }}
           >
             {isPlaying ? 'Pause' : 'Start Race'}
@@ -118,7 +129,7 @@ const Completion7 = () => {
               cursor: 'pointer',
               fontWeight: 600,
               fontSize: '1rem',
-              transition: 'background 0.2s'
+              transition: 'background 0.2s',
             }}
           >
             Reset
@@ -131,18 +142,18 @@ const Completion7 = () => {
           // If item is not in top 12, don't render or render hidden?
           // To animate entering/leaving, it's better to render but fade out/move down.
           // For simplicity, we only render if in idToRank map (or just keep all in DOM but hidden - better for React keys)
-          
+
           const rank = idToRank.get(item.id);
           const isVisible = rank !== undefined;
-          
+
           // Layout constants
           const rowHeight = 45;
           const barHeight = 35;
           const maxBarWidth = 600; // max width in px
-          
+
           const width = (item.score / maxScore) * 100 + '%';
           const top = isVisible ? rank * rowHeight : 600; // Drop to bottom if not in list
-          
+
           return (
             <div
               key={item.id}
@@ -156,10 +167,10 @@ const Completion7 = () => {
                 opacity: isVisible ? 1 : 0,
                 display: 'flex',
                 alignItems: 'center',
-                pointerEvents: 'none' // allow clicks through if needed
+                pointerEvents: 'none', // allow clicks through if needed
               }}
             >
-              <div 
+              <div
                 style={{
                   width: width,
                   height: '100%',
@@ -171,26 +182,30 @@ const Completion7 = () => {
                   justifyContent: 'flex-end',
                   paddingRight: '10px',
                   boxShadow: '2px 2px 5px rgba(0,0,0,0.2)',
-                  minWidth: '1px' // ensure visibility
+                  minWidth: '1px', // ensure visibility
                 }}
               >
                 {/* Optional: Icon could go here */}
               </div>
-              
-              <div style={{ 
-                marginLeft: '12px', 
-                display: 'flex', 
-                flexDirection: 'column', 
-                justifyContent: 'center' 
-              }}>
+
+              <div
+                style={{
+                  marginLeft: '12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
                 <span style={{ fontWeight: 700, fontSize: '1rem' }}>{item.name}</span>
-                <span style={{ fontSize: '0.85rem', color: '#aaa' }}>{item.score.toLocaleString()}</span>
+                <span style={{ fontSize: '0.85rem', color: '#aaa' }}>
+                  {item.score.toLocaleString()}
+                </span>
               </div>
             </div>
           );
         })}
       </div>
-      
+
       <style>{`
         button:hover {
           filter: brightness(1.1);

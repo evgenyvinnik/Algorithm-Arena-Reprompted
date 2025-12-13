@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const Completion3 = () => {
   const [ballPosition, setBallPosition] = useState({ x: 100, y: 100 });
@@ -15,45 +15,45 @@ const Completion3 = () => {
   const inputRefs = useRef({});
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    company: "",
-    message: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: '',
+    message: '',
   });
 
   const fields = [
     {
-      name: "firstName",
-      label: "First Name",
-      type: "text",
-      placeholder: "John",
+      name: 'firstName',
+      label: 'First Name',
+      type: 'text',
+      placeholder: 'John',
     },
-    { name: "lastName", label: "Last Name", type: "text", placeholder: "Doe" },
+    { name: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Doe' },
     {
-      name: "email",
-      label: "Email",
-      type: "email",
-      placeholder: "john@example.com",
-    },
-    {
-      name: "phone",
-      label: "Phone",
-      type: "tel",
-      placeholder: "+1 234 567 8900",
+      name: 'email',
+      label: 'Email',
+      type: 'email',
+      placeholder: 'john@example.com',
     },
     {
-      name: "company",
-      label: "Company",
-      type: "text",
-      placeholder: "Acme Inc.",
+      name: 'phone',
+      label: 'Phone',
+      type: 'tel',
+      placeholder: '+1 234 567 8900',
     },
     {
-      name: "message",
-      label: "Message",
-      type: "textarea",
-      placeholder: "Your message here...",
+      name: 'company',
+      label: 'Company',
+      type: 'text',
+      placeholder: 'Acme Inc.',
+    },
+    {
+      name: 'message',
+      label: 'Message',
+      type: 'textarea',
+      placeholder: 'Your message here...',
     },
   ];
 
@@ -171,149 +171,149 @@ const Completion3 = () => {
     // Big bounce on submit
     setBallVelocity({ x: 0, y: -30 });
     setTimeout(() => {
-      alert("Form submitted! 🎉");
+      alert('Form submitted! 🎉');
     }, 500);
   };
 
   const styles = {
     container: {
-      position: "relative",
-      minHeight: "100vh",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      padding: "40px 20px",
+      position: 'relative',
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      padding: '40px 20px',
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      overflow: "hidden",
+      overflow: 'hidden',
     },
     formWrapper: {
-      maxWidth: "500px",
-      margin: "0 auto",
-      position: "relative",
+      maxWidth: '500px',
+      margin: '0 auto',
+      position: 'relative',
       zIndex: 1,
     },
     title: {
-      textAlign: "center",
-      color: "white",
-      fontSize: "2.5rem",
-      marginBottom: "10px",
-      textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+      textAlign: 'center',
+      color: 'white',
+      fontSize: '2.5rem',
+      marginBottom: '10px',
+      textShadow: '2px 2px 4px rgba(0,0,0,0.2)',
     },
     subtitle: {
-      textAlign: "center",
-      color: "rgba(255,255,255,0.8)",
-      fontSize: "1rem",
-      marginBottom: "30px",
+      textAlign: 'center',
+      color: 'rgba(255,255,255,0.8)',
+      fontSize: '1rem',
+      marginBottom: '30px',
     },
     form: {
-      background: "rgba(255,255,255,0.95)",
-      borderRadius: "20px",
-      padding: "40px",
-      boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+      background: 'rgba(255,255,255,0.95)',
+      borderRadius: '20px',
+      padding: '40px',
+      boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
     },
     fieldGroup: {
-      marginBottom: "25px",
+      marginBottom: '25px',
     },
     label: {
-      display: "block",
-      marginBottom: "8px",
-      fontWeight: "600",
-      color: "#333",
-      fontSize: "0.9rem",
+      display: 'block',
+      marginBottom: '8px',
+      fontWeight: '600',
+      color: '#333',
+      fontSize: '0.9rem',
     },
     input: {
-      width: "100%",
-      padding: "15px 20px",
-      border: "2px solid #e0e0e0",
-      borderRadius: "12px",
-      fontSize: "1rem",
-      transition: "all 0.3s ease",
-      outline: "none",
-      boxSizing: "border-box",
+      width: '100%',
+      padding: '15px 20px',
+      border: '2px solid #e0e0e0',
+      borderRadius: '12px',
+      fontSize: '1rem',
+      transition: 'all 0.3s ease',
+      outline: 'none',
+      boxSizing: 'border-box',
     },
     inputFocused: {
-      borderColor: "#667eea",
-      boxShadow: "0 0 0 4px rgba(102, 126, 234, 0.2)",
+      borderColor: '#667eea',
+      boxShadow: '0 0 0 4px rgba(102, 126, 234, 0.2)',
     },
     textarea: {
-      width: "100%",
-      padding: "15px 20px",
-      border: "2px solid #e0e0e0",
-      borderRadius: "12px",
-      fontSize: "1rem",
-      transition: "all 0.3s ease",
-      outline: "none",
-      minHeight: "120px",
-      resize: "vertical",
-      fontFamily: "inherit",
-      boxSizing: "border-box",
+      width: '100%',
+      padding: '15px 20px',
+      border: '2px solid #e0e0e0',
+      borderRadius: '12px',
+      fontSize: '1rem',
+      transition: 'all 0.3s ease',
+      outline: 'none',
+      minHeight: '120px',
+      resize: 'vertical',
+      fontFamily: 'inherit',
+      boxSizing: 'border-box',
     },
     button: {
-      width: "100%",
-      padding: "18px",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      color: "white",
-      border: "none",
-      borderRadius: "12px",
-      fontSize: "1.1rem",
-      fontWeight: "600",
-      cursor: "pointer",
-      transition: "transform 0.2s ease, box-shadow 0.2s ease",
-      marginTop: "10px",
+      width: '100%',
+      padding: '18px',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      color: 'white',
+      border: 'none',
+      borderRadius: '12px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: 'pointer',
+      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      marginTop: '10px',
     },
     ball: {
-      position: "absolute",
-      width: "50px",
-      height: "50px",
-      borderRadius: "50%",
-      background: "linear-gradient(145deg, #ff6b6b, #ee5a5a)",
+      position: 'absolute',
+      width: '50px',
+      height: '50px',
+      borderRadius: '50%',
+      background: 'linear-gradient(145deg, #ff6b6b, #ee5a5a)',
       boxShadow: `
         inset -5px -5px 15px rgba(0,0,0,0.2),
         inset 5px 5px 15px rgba(255,255,255,0.3),
         0 10px 30px rgba(238, 90, 90, 0.4)
       `,
       zIndex: 100,
-      pointerEvents: "none",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      pointerEvents: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     ballFace: {
-      position: "relative",
-      width: "30px",
-      height: "20px",
+      position: 'relative',
+      width: '30px',
+      height: '20px',
     },
     eye: {
-      position: "absolute",
-      width: "8px",
-      height: "10px",
-      background: "#333",
-      borderRadius: "50%",
-      top: "0",
+      position: 'absolute',
+      width: '8px',
+      height: '10px',
+      background: '#333',
+      borderRadius: '50%',
+      top: '0',
     },
     eyeLeft: {
-      left: "4px",
+      left: '4px',
     },
     eyeRight: {
-      right: "4px",
+      right: '4px',
     },
     mouth: {
-      position: "absolute",
-      width: "15px",
-      height: "8px",
-      border: "3px solid #333",
-      borderTop: "none",
-      borderRadius: "0 0 15px 15px",
-      bottom: "0",
-      left: "50%",
-      transform: "translateX(-50%)",
+      position: 'absolute',
+      width: '15px',
+      height: '8px',
+      border: '3px solid #333',
+      borderTop: 'none',
+      borderRadius: '0 0 15px 15px',
+      bottom: '0',
+      left: '50%',
+      transform: 'translateX(-50%)',
     },
     highlight: {
-      position: "absolute",
-      width: "12px",
-      height: "12px",
-      background: "rgba(255,255,255,0.6)",
-      borderRadius: "50%",
-      top: "8px",
-      right: "10px",
+      position: 'absolute',
+      width: '12px',
+      height: '12px',
+      background: 'rgba(255,255,255,0.6)',
+      borderRadius: '50%',
+      top: '8px',
+      right: '10px',
     },
   };
 
@@ -331,7 +331,7 @@ const Completion3 = () => {
             scaleX(${squashDirection.scaleX})
             scaleY(${squashDirection.scaleY})
           `,
-          transition: isSquashing ? "none" : "transform 0.1s ease-out",
+          transition: isSquashing ? 'none' : 'transform 0.1s ease-out',
         }}
       >
         <div style={styles.highlight}></div>
@@ -344,15 +344,13 @@ const Completion3 = () => {
 
       <div style={styles.formWrapper}>
         <h1 style={styles.title}>✨ Bouncy Form</h1>
-        <p style={styles.subtitle}>
-          Fill out the form and watch the ball follow along!
-        </p>
+        <p style={styles.subtitle}>Fill out the form and watch the ball follow along!</p>
 
         <form style={styles.form} onSubmit={handleSubmit}>
           {fields.map((field) => (
             <div key={field.name} style={styles.fieldGroup}>
               <label style={styles.label}>{field.label}</label>
-              {field.type === "textarea" ? (
+              {field.type === 'textarea' ? (
                 <textarea
                   ref={(el) => (inputRefs.current[field.name] = el)}
                   name={field.name}
@@ -387,12 +385,12 @@ const Completion3 = () => {
             type="submit"
             style={styles.button}
             onMouseEnter={(e) => {
-              e.target.style.transform = "translateY(-2px)";
-              e.target.style.boxShadow = "0 10px 30px rgba(102, 126, 234, 0.4)";
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 10px 30px rgba(102, 126, 234, 0.4)';
             }}
             onMouseLeave={(e) => {
-              e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "none";
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = 'none';
             }}
           >
             Submit 🚀

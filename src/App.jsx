@@ -19,50 +19,46 @@ function App() {
   return (
     <Router>
       <div style={{ minHeight: '100vh' }}>
-        <nav style={{ 
-          padding: '10px 20px', 
-          backgroundColor: '#282c34', 
-          color: 'white',
-          marginBottom: '20px'
-        }}>
-          <Link 
-            to="/" 
-            style={{ 
-              color: 'white', 
+        <nav
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#282c34',
+            color: 'white',
+            marginBottom: '20px',
+          }}
+        >
+          <Link
+            to="/"
+            style={{
+              color: 'white',
               textDecoration: 'none',
               fontSize: '18px',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
             }}
           >
             🏠 Home
           </Link>
         </nav>
-        
-        <React.Suspense fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>}>
+
+        <React.Suspense
+          fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>}
+        >
           <Routes>
             <Route path="/" element={<Home />} />
-            
+
             {/* Gemini 3 routes */}
             {Object.keys(gemini3Components).map((num) => {
               const Component = gemini3Components[num];
               return (
-                <Route 
-                  key={`gemini3-${num}`}
-                  path={`/gemini3/${num}`} 
-                  element={<Component />} 
-                />
+                <Route key={`gemini3-${num}`} path={`/gemini3/${num}`} element={<Component />} />
               );
             })}
-            
+
             {/* Opus 4.5 routes */}
             {Object.keys(opus45Components).map((num) => {
               const Component = opus45Components[num];
               return (
-                <Route 
-                  key={`opus45-${num}`}
-                  path={`/opus45/${num}`} 
-                  element={<Component />} 
-                />
+                <Route key={`opus45-${num}`} path={`/opus45/${num}`} element={<Component />} />
               );
             })}
           </Routes>

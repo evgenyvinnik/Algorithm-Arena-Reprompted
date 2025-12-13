@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback } from 'react';
 
 const Completion2 = () => {
   const [points, setPoints] = useState([]);
@@ -21,9 +21,9 @@ const Completion2 = () => {
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
     if (Math.abs(dx) > Math.abs(dy)) {
-      return dx > 0 ? "right" : "left";
+      return dx > 0 ? 'right' : 'left';
     }
-    return dy > 0 ? "down" : "up";
+    return dy > 0 ? 'down' : 'up';
   };
 
   // Calculate the turn type at a corner
@@ -32,17 +32,17 @@ const Completion2 = () => {
     const dir2 = getDirection(p2, p3);
 
     const turns = {
-      "right-down": "right",
-      "right-up": "left",
-      "left-down": "left",
-      "left-up": "right",
-      "down-right": "left",
-      "down-left": "right",
-      "up-right": "right",
-      "up-left": "left",
+      'right-down': 'right',
+      'right-up': 'left',
+      'left-down': 'left',
+      'left-up': 'right',
+      'down-right': 'left',
+      'down-left': 'right',
+      'up-right': 'right',
+      'up-left': 'left',
     };
 
-    return turns[`${dir1}-${dir2}`] || "straight";
+    return turns[`${dir1}-${dir2}`] || 'straight';
   }, []);
 
   // Generate double line paths
@@ -74,7 +74,7 @@ const Completion2 = () => {
         const perpIn = getPerpendicularOffset(prev, curr, offset);
         const perpOut = getPerpendicularOffset(curr, next, offset);
 
-        if (turnType === "right") {
+        if (turnType === 'right') {
           // Right turn: inner line needs extra point, outer cuts corner
           innerPath.push({ x: curr.x + perpIn.x, y: curr.y + perpIn.y });
           innerPath.push({ x: curr.x + perpOut.x, y: curr.y + perpOut.y });
@@ -82,7 +82,7 @@ const Completion2 = () => {
             x: curr.x - perpIn.x - perpOut.x,
             y: curr.y - perpIn.y - perpOut.y,
           });
-        } else if (turnType === "left") {
+        } else if (turnType === 'left') {
           // Left turn: outer line needs extra point, inner cuts corner
           innerPath.push({
             x: curr.x + perpIn.x + perpOut.x,
@@ -99,8 +99,8 @@ const Completion2 = () => {
 
   // Convert path to SVG path string
   const pathToSvgString = (path) => {
-    if (path.length === 0) return "";
-    return path.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+    if (path.length === 0) return '';
+    return path.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
   };
 
   // Handle canvas click to add points
@@ -127,10 +127,7 @@ const Completion2 = () => {
     }
 
     // Don't add if too close to last point
-    if (
-      Math.abs(newPoint.x - lastPoint.x) < 10 &&
-      Math.abs(newPoint.y - lastPoint.y) < 10
-    ) {
+    if (Math.abs(newPoint.x - lastPoint.x) < 10 && Math.abs(newPoint.y - lastPoint.y) < 10) {
       return;
     }
 
@@ -175,36 +172,36 @@ const Completion2 = () => {
   return (
     <div
       style={{
-        padding: "20px",
-        fontFamily: "system-ui, -apple-system, sans-serif",
-        maxWidth: "800px",
-        margin: "0 auto",
+        padding: '20px',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        maxWidth: '800px',
+        margin: '0 auto',
       }}
     >
-      <h2 style={{ marginBottom: "10px" }}>Double Lines Challenge</h2>
-      <p style={{ color: "#666", marginBottom: "20px" }}>
-        Click on the canvas to add points. Lines are automatically snapped to
-        90° angles. Two parallel lines are drawn without overlapping.
+      <h2 style={{ marginBottom: '10px' }}>Double Lines Challenge</h2>
+      <p style={{ color: '#666', marginBottom: '20px' }}>
+        Click on the canvas to add points. Lines are automatically snapped to 90° angles. Two
+        parallel lines are drawn without overlapping.
       </p>
 
       <div
         style={{
-          marginBottom: "20px",
-          display: "flex",
-          gap: "20px",
-          alignItems: "center",
-          flexWrap: "wrap",
+          marginBottom: '20px',
+          display: 'flex',
+          gap: '20px',
+          alignItems: 'center',
+          flexWrap: 'wrap',
         }}
       >
         <button
           onClick={reset}
           style={{
-            padding: "8px 16px",
-            backgroundColor: "#ff4444",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
+            padding: '8px 16px',
+            backgroundColor: '#ff4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
           }}
         >
           Reset
@@ -212,12 +209,12 @@ const Completion2 = () => {
         <button
           onClick={loadExample}
           style={{
-            padding: "8px 16px",
-            backgroundColor: "#4444ff",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
+            padding: '8px 16px',
+            backgroundColor: '#4444ff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
           }}
         >
           Load Snake Example
@@ -225,12 +222,12 @@ const Completion2 = () => {
         <button
           onClick={loadSpiralExample}
           style={{
-            padding: "8px 16px",
-            backgroundColor: "#44aa44",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
+            padding: '8px 16px',
+            backgroundColor: '#44aa44',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
           }}
         >
           Load Spiral Example
@@ -239,13 +236,13 @@ const Completion2 = () => {
 
       <div
         style={{
-          marginBottom: "20px",
-          display: "flex",
-          gap: "30px",
-          flexWrap: "wrap",
+          marginBottom: '20px',
+          display: 'flex',
+          gap: '30px',
+          flexWrap: 'wrap',
         }}
       >
-        <label style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           Line Width: {lineWidth}px
           <input
             type="range"
@@ -253,10 +250,10 @@ const Completion2 = () => {
             max="30"
             value={lineWidth}
             onChange={(e) => setLineWidth(Number(e.target.value))}
-            style={{ width: "120px" }}
+            style={{ width: '120px' }}
           />
         </label>
-        <label style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           Gap: {gap}px
           <input
             type="range"
@@ -264,7 +261,7 @@ const Completion2 = () => {
             max="30"
             value={gap}
             onChange={(e) => setGap(Number(e.target.value))}
-            style={{ width: "120px" }}
+            style={{ width: '120px' }}
           />
         </label>
       </div>
@@ -274,10 +271,10 @@ const Completion2 = () => {
         width="100%"
         height="450"
         style={{
-          border: "2px solid #ccc",
-          borderRadius: "8px",
-          backgroundColor: "#f9f9f9",
-          cursor: "crosshair",
+          border: '2px solid #ccc',
+          borderRadius: '8px',
+          backgroundColor: '#f9f9f9',
+          cursor: 'crosshair',
         }}
         onClick={handleCanvasClick}
       >
@@ -313,20 +310,8 @@ const Completion2 = () => {
         {/* Points markers */}
         {points.map((point, index) => (
           <g key={index}>
-            <circle
-              cx={point.x}
-              cy={point.y}
-              r="6"
-              fill="#2c3e50"
-              stroke="white"
-              strokeWidth="2"
-            />
-            <text
-              x={point.x + 10}
-              y={point.y - 10}
-              fontSize="12"
-              fill="#2c3e50"
-            >
+            <circle cx={point.x} cy={point.y} r="6" fill="#2c3e50" stroke="white" strokeWidth="2" />
+            <text x={point.x + 10} y={point.y - 10} fontSize="12" fill="#2c3e50">
               {index + 1}
             </text>
           </g>
@@ -340,11 +325,10 @@ const Completion2 = () => {
         )}
       </svg>
 
-      <div style={{ marginTop: "15px", fontSize: "14px", color: "#666" }}>
+      <div style={{ marginTop: '15px', fontSize: '14px', color: '#666' }}>
         <strong>Points:</strong> {points.length} |
-        <span style={{ color: "#3498db", marginLeft: "10px" }}>■</span> Inner
-        Line |<span style={{ color: "#e74c3c", marginLeft: "10px" }}>■</span>{" "}
-        Outer Line
+        <span style={{ color: '#3498db', marginLeft: '10px' }}>■</span> Inner Line |
+        <span style={{ color: '#e74c3c', marginLeft: '10px' }}>■</span> Outer Line
       </div>
     </div>
   );

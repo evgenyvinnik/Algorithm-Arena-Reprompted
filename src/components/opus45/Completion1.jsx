@@ -1,44 +1,44 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 
 // Chess piece Unicode symbols
 const PIECES = {
-  wK: "♔",
-  wQ: "♕",
-  wR: "♖",
-  wB: "♗",
-  wN: "♘",
-  wP: "♙",
-  bK: "♚",
-  bQ: "♛",
-  bR: "♜",
-  bB: "♝",
-  bN: "♞",
-  bP: "♟",
+  wK: '♔',
+  wQ: '♕',
+  wR: '♖',
+  wB: '♗',
+  wN: '♘',
+  wP: '♙',
+  bK: '♚',
+  bQ: '♛',
+  bR: '♜',
+  bB: '♝',
+  bN: '♞',
+  bP: '♟',
 };
 
 // Initial board setup
 const initialBoard = () => [
-  ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR"],
-  ["bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP"],
+  ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
+  ['bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP'],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
-  ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP"],
-  ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"],
+  ['wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP'],
+  ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR'],
 ];
 
 // Convert board position to algebraic notation
 const toAlgebraic = (row, col) => {
-  const files = "abcdefgh";
-  const ranks = "87654321";
+  const files = 'abcdefgh';
+  const ranks = '87654321';
   return files[col] + ranks[row];
 };
 
 // Convert algebraic notation to board position
 const fromAlgebraic = (notation) => {
-  const files = "abcdefgh";
-  const ranks = "87654321";
+  const files = 'abcdefgh';
+  const ranks = '87654321';
   const col = files.indexOf(notation[0]);
   const row = ranks.indexOf(notation[1]);
   return { row, col };
@@ -46,7 +46,7 @@ const fromAlgebraic = (notation) => {
 
 // Generate FEN string from board state
 const boardToFEN = (board, turn, castling, enPassant, halfmove, fullmove) => {
-  let fen = "";
+  let fen = '';
   for (let row = 0; row < 8; row++) {
     let empty = 0;
     for (let col = 0; col < 8; col++) {
@@ -57,24 +57,20 @@ const boardToFEN = (board, turn, castling, enPassant, halfmove, fullmove) => {
           empty = 0;
         }
         const pieceChar = piece[1];
-        fen +=
-          piece[0] === "w" ? pieceChar.toUpperCase() : pieceChar.toLowerCase();
+        fen += piece[0] === 'w' ? pieceChar.toUpperCase() : pieceChar.toLowerCase();
       } else {
         empty++;
       }
     }
     if (empty > 0) fen += empty;
-    if (row < 7) fen += "/";
+    if (row < 7) fen += '/';
   }
-  fen += ` ${turn} ${castling || "-"} ${
-    enPassant || "-"
-  } ${halfmove} ${fullmove}`;
+  fen += ` ${turn} ${castling || '-'} ${enPassant || '-'} ${halfmove} ${fullmove}`;
   return fen;
 };
 
 // Check if a position is valid
-const isValidPosition = (row, col) =>
-  row >= 0 && row < 8 && col >= 0 && col < 8;
+const isValidPosition = (row, col) => row >= 0 && row < 8 && col >= 0 && col < 8;
 
 // Get all possible moves for a piece
 const getPossibleMoves = (
@@ -90,7 +86,7 @@ const getPossibleMoves = (
   const color = piece[0];
   const type = piece[1];
   const moves = [];
-  const direction = color === "w" ? -1 : 1;
+  const direction = color === 'w' ? -1 : 1;
 
   const addMoveIfValid = (r, c, captureOnly = false, moveOnly = false) => {
     if (!isValidPosition(r, c)) return false;
@@ -103,8 +99,8 @@ const getPossibleMoves = (
   };
 
   switch (type) {
-    case "P": {
-      const startRow = color === "w" ? 6 : 1;
+    case 'P': {
+      const startRow = color === 'w' ? 6 : 1;
       if (addMoveIfValid(row + direction, col, false, true)) {
         if (row === startRow) {
           addMoveIfValid(row + 2 * direction, col, false, true);
@@ -120,7 +116,7 @@ const getPossibleMoves = (
       }
       break;
     }
-    case "N": {
+    case 'N': {
       const knightMoves = [
         [-2, -1],
         [-2, 1],
@@ -134,7 +130,7 @@ const getPossibleMoves = (
       knightMoves.forEach(([dr, dc]) => addMoveIfValid(row + dr, col + dc));
       break;
     }
-    case "B": {
+    case 'B': {
       for (const d of [
         [-1, -1],
         [-1, 1],
@@ -147,7 +143,7 @@ const getPossibleMoves = (
       }
       break;
     }
-    case "R": {
+    case 'R': {
       for (const d of [
         [-1, 0],
         [1, 0],
@@ -160,7 +156,7 @@ const getPossibleMoves = (
       }
       break;
     }
-    case "Q": {
+    case 'Q': {
       for (const d of [
         [-1, -1],
         [-1, 1],
@@ -177,13 +173,13 @@ const getPossibleMoves = (
       }
       break;
     }
-    case "K": {
+    case 'K': {
       for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -1; dc <= 1; dc++) {
           if (dr !== 0 || dc !== 0) addMoveIfValid(row + dr, col + dc);
         }
       }
-      const backRank = color === "w" ? 7 : 0;
+      const backRank = color === 'w' ? 7 : 0;
       if (row === backRank && col === 4) {
         if (
           castlingRights[`${color}K`] &&
@@ -191,7 +187,7 @@ const getPossibleMoves = (
           !board[backRank][6] &&
           board[backRank][7] === `${color}R`
         ) {
-          moves.push({ row: backRank, col: 6, castling: "K" });
+          moves.push({ row: backRank, col: 6, castling: 'K' });
         }
         if (
           castlingRights[`${color}Q`] &&
@@ -200,7 +196,7 @@ const getPossibleMoves = (
           !board[backRank][1] &&
           board[backRank][0] === `${color}R`
         ) {
-          moves.push({ row: backRank, col: 2, castling: "Q" });
+          moves.push({ row: backRank, col: 2, castling: 'Q' });
         }
       }
       break;
@@ -229,7 +225,7 @@ const isInCheck = (board, color) => {
   const kingPos = findKing(board, color);
   if (!kingPos) return false;
 
-  const enemyColor = color === "w" ? "b" : "w";
+  const enemyColor = color === 'w' ? 'b' : 'w';
   for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 8; col++) {
       const piece = board[row][col];
@@ -245,23 +241,16 @@ const isInCheck = (board, color) => {
 };
 
 // Make a move and return new board
-const makeMove = (
-  board,
-  fromRow,
-  fromCol,
-  toRow,
-  toCol,
-  promotionPiece = "Q"
-) => {
+const makeMove = (board, fromRow, fromCol, toRow, toCol, promotionPiece = 'Q') => {
   const newBoard = board.map((r) => [...r]);
   const piece = newBoard[fromRow][fromCol];
   const color = piece[0];
 
-  if (piece[1] === "P" && fromCol !== toCol && !newBoard[toRow][toCol]) {
+  if (piece[1] === 'P' && fromCol !== toCol && !newBoard[toRow][toCol]) {
     newBoard[fromRow][toCol] = null;
   }
 
-  if (piece[1] === "K" && Math.abs(fromCol - toCol) === 2) {
+  if (piece[1] === 'K' && Math.abs(fromCol - toCol) === 2) {
     if (toCol === 6) {
       newBoard[fromRow][5] = newBoard[fromRow][7];
       newBoard[fromRow][7] = null;
@@ -271,7 +260,7 @@ const makeMove = (
     }
   }
 
-  if (piece[1] === "P" && (toRow === 0 || toRow === 7)) {
+  if (piece[1] === 'P' && (toRow === 0 || toRow === 7)) {
     newBoard[toRow][toCol] = `${color}${promotionPiece}`;
   } else {
     newBoard[toRow][toCol] = piece;
@@ -297,13 +286,7 @@ const getAllLegalMoves = (board, color, enPassantSquare, castlingRights) => {
     for (let col = 0; col < 8; col++) {
       const piece = board[row][col];
       if (piece && piece[0] === color) {
-        const moves = getPossibleMoves(
-          board,
-          row,
-          col,
-          enPassantSquare,
-          castlingRights
-        );
+        const moves = getPossibleMoves(board, row, col, enPassantSquare, castlingRights);
         moves.forEach((move) => {
           if (isLegalMove(board, row, col, move.row, move.col)) {
             legalMoves.push({ from: { row, col }, to: move });
@@ -316,12 +299,8 @@ const getAllLegalMoves = (board, color, enPassantSquare, castlingRights) => {
 };
 
 // Convert move to UCI notation
-const toUCI = (fromRow, fromCol, toRow, toCol, promotion = "") => {
-  return (
-    toAlgebraic(fromRow, fromCol) +
-    toAlgebraic(toRow, toCol) +
-    promotion.toLowerCase()
-  );
+const toUCI = (fromRow, fromCol, toRow, toCol, promotion = '') => {
+  return toAlgebraic(fromRow, fromCol) + toAlgebraic(toRow, toCol) + promotion.toLowerCase();
 };
 
 // Parse UCI move
@@ -336,8 +315,8 @@ const Completion1 = () => {
   const [board, setBoard] = useState(initialBoard);
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [possibleMoves, setPossibleMoves] = useState([]);
-  const [turn, setTurn] = useState("w");
-  const [gameStatus, setGameStatus] = useState("playing");
+  const [turn, setTurn] = useState('w');
+  const [gameStatus, setGameStatus] = useState('playing');
   const [moveHistory, setMoveHistory] = useState([]);
   const [stockfishReady, setStockfishReady] = useState(false);
   const [thinking, setThinking] = useState(false);
@@ -373,41 +352,26 @@ const Completion1 = () => {
     const currentCastlingRights = gameStateRef.current.castlingRights;
 
     setBoard((prevBoard) => {
-      const newBoard = makeMove(
-        prevBoard,
-        from.row,
-        from.col,
-        to.row,
-        to.col,
-        promotion || "Q"
-      );
+      const newBoard = makeMove(prevBoard, from.row, from.col, to.row, to.col, promotion || 'Q');
 
-      const legalMoves = getAllLegalMoves(
-        newBoard,
-        "w",
-        null,
-        currentCastlingRights
-      );
+      const legalMoves = getAllLegalMoves(newBoard, 'w', null, currentCastlingRights);
       if (legalMoves.length === 0) {
-        if (isInCheck(newBoard, "w")) {
-          setGameStatus("checkmate-black");
+        if (isInCheck(newBoard, 'w')) {
+          setGameStatus('checkmate-black');
         } else {
-          setGameStatus("stalemate");
+          setGameStatus('stalemate');
         }
-      } else if (isInCheck(newBoard, "w")) {
-        setGameStatus("check");
+      } else if (isInCheck(newBoard, 'w')) {
+        setGameStatus('check');
       } else {
-        setGameStatus("playing");
+        setGameStatus('playing');
       }
-      setTurn("w");
+      setTurn('w');
 
       return newBoard;
     });
 
-    setMoveHistory((prev) => [
-      ...prev,
-      toUCI(from.row, from.col, to.row, to.col, promotion || ""),
-    ]);
+    setMoveHistory((prev) => [...prev, toUCI(from.row, from.col, to.row, to.col, promotion || '')]);
     setHintMove(null);
   }, []);
 
@@ -416,34 +380,34 @@ const Completion1 = () => {
     const initStockfish = () => {
       try {
         const worker = new Worker(
-          "https://cdn.jsdelivr.net/npm/stockfish@16.0.0/src/stockfish-nnue-16-single.js"
+          'https://cdn.jsdelivr.net/npm/stockfish@16.0.0/src/stockfish-nnue-16-single.js'
         );
 
         worker.onmessage = (e) => {
           const message = e.data;
 
-          if (message === "uciok") {
-            worker.postMessage("isready");
-          } else if (message === "readyok") {
+          if (message === 'uciok') {
+            worker.postMessage('isready');
+          } else if (message === 'readyok') {
             setStockfishReady(true);
-          } else if (message.startsWith("bestmove")) {
-            const parts = message.split(" ");
+          } else if (message.startsWith('bestmove')) {
+            const parts = message.split(' ');
             const bestMove = parts[1];
-            if (pendingEvalRef.current === "hint") {
+            if (pendingEvalRef.current === 'hint') {
               setHintMove(bestMove);
               pendingEvalRef.current = null;
-            } else if (pendingEvalRef.current === "bot") {
+            } else if (pendingEvalRef.current === 'bot') {
               const { from, to, promotion } = parseUCI(bestMove);
               executeBotMoveFromRef(from, to, promotion);
               pendingEvalRef.current = null;
             }
             setThinking(false);
-          } else if (message.startsWith("info") && message.includes("score")) {
+          } else if (message.startsWith('info') && message.includes('score')) {
             const scoreMatch = message.match(/score (cp|mate) (-?\d+)/);
             if (scoreMatch) {
               const type = scoreMatch[1];
               const value = parseInt(scoreMatch[2]);
-              if (type === "cp") {
+              if (type === 'cp') {
                 setEvaluation((value / 100).toFixed(2));
               } else {
                 setEvaluation(`M${value}`);
@@ -452,10 +416,10 @@ const Completion1 = () => {
           }
         };
 
-        worker.postMessage("uci");
+        worker.postMessage('uci');
         stockfishRef.current = worker;
       } catch (error) {
-        console.error("Failed to initialize Stockfish:", error);
+        console.error('Failed to initialize Stockfish:', error);
       }
     };
 
@@ -474,15 +438,15 @@ const Completion1 = () => {
       if (!stockfishRef.current || !stockfishReady) return;
 
       setThinking(true);
-      pendingEvalRef.current = "bot";
+      pendingEvalRef.current = 'bot';
 
       const fen = boardToFEN(
         currentBoard,
-        "b",
-        (castlingRights.wK ? "K" : "") +
-          (castlingRights.wQ ? "Q" : "") +
-          (castlingRights.bK ? "k" : "") +
-          (castlingRights.bQ ? "q" : "") || "-",
+        'b',
+        (castlingRights.wK ? 'K' : '') +
+          (castlingRights.wQ ? 'Q' : '') +
+          (castlingRights.bK ? 'k' : '') +
+          (castlingRights.bQ ? 'q' : '') || '-',
         enPassantSquare,
         halfmoveClock,
         fullmoveNumber
@@ -491,36 +455,22 @@ const Completion1 = () => {
       stockfishRef.current.postMessage(`position fen ${fen}`);
       stockfishRef.current.postMessage(`go depth ${difficulty}`);
     },
-    [
-      stockfishReady,
-      castlingRights,
-      enPassantSquare,
-      halfmoveClock,
-      fullmoveNumber,
-      difficulty,
-    ]
+    [stockfishReady, castlingRights, enPassantSquare, halfmoveClock, fullmoveNumber, difficulty]
   );
 
   // Execute a move
   const executeMove = useCallback(
-    (fromRow, fromCol, toRow, toCol, promotionPiece = "Q") => {
+    (fromRow, fromCol, toRow, toCol, promotionPiece = 'Q') => {
       const currentBoard = gameStateRef.current.board;
       const piece = currentBoard[fromRow][fromCol];
-      const newBoard = makeMove(
-        currentBoard,
-        fromRow,
-        fromCol,
-        toRow,
-        toCol,
-        promotionPiece
-      );
+      const newBoard = makeMove(currentBoard, fromRow, fromCol, toRow, toCol, promotionPiece);
 
       // Update castling rights
       const newCastlingRights = { ...castlingRights };
-      if (piece === "wK") {
+      if (piece === 'wK') {
         newCastlingRights.wK = false;
         newCastlingRights.wQ = false;
-      } else if (piece === "wR") {
+      } else if (piece === 'wR') {
         if (fromCol === 0) newCastlingRights.wQ = false;
         if (fromCol === 7) newCastlingRights.wK = false;
       }
@@ -528,14 +478,14 @@ const Completion1 = () => {
 
       // Update en passant square
       let newEnPassant = null;
-      if (piece[1] === "P" && Math.abs(fromRow - toRow) === 2) {
+      if (piece[1] === 'P' && Math.abs(fromRow - toRow) === 2) {
         newEnPassant = toAlgebraic((fromRow + toRow) / 2, fromCol);
       }
       setEnPassantSquare(newEnPassant);
 
       // Update clocks
       const isCapture = currentBoard[toRow][toCol] !== null;
-      const isPawnMove = piece[1] === "P";
+      const isPawnMove = piece[1] === 'P';
       setHalfmoveClock(isCapture || isPawnMove ? 0 : halfmoveClock + 1);
 
       setBoard(newBoard);
@@ -548,30 +498,25 @@ const Completion1 = () => {
           fromCol,
           toRow,
           toCol,
-          piece[1] === "P" && (toRow === 0 || toRow === 7) ? promotionPiece : ""
+          piece[1] === 'P' && (toRow === 0 || toRow === 7) ? promotionPiece : ''
         ),
       ]);
       setHintMove(null);
 
       // Check game status
-      const legalMoves = getAllLegalMoves(
-        newBoard,
-        "b",
-        newEnPassant,
-        newCastlingRights
-      );
+      const legalMoves = getAllLegalMoves(newBoard, 'b', newEnPassant, newCastlingRights);
       if (legalMoves.length === 0) {
-        if (isInCheck(newBoard, "b")) {
-          setGameStatus("checkmate-white");
+        if (isInCheck(newBoard, 'b')) {
+          setGameStatus('checkmate-white');
         } else {
-          setGameStatus("stalemate");
+          setGameStatus('stalemate');
         }
-        setTurn("b");
+        setTurn('b');
         return;
       }
 
-      setTurn("b");
-      setGameStatus(isInCheck(newBoard, "b") ? "check" : "playing");
+      setTurn('b');
+      setGameStatus(isInCheck(newBoard, 'b') ? 'check' : 'playing');
 
       // Bot moves
       setTimeout(() => makeBotMove(newBoard), 500);
@@ -600,9 +545,9 @@ const Completion1 = () => {
   const handleSquareClick = useCallback(
     (row, col) => {
       if (
-        gameStatus.startsWith("checkmate") ||
-        gameStatus === "stalemate" ||
-        turn !== "w" ||
+        gameStatus.startsWith('checkmate') ||
+        gameStatus === 'stalemate' ||
+        turn !== 'w' ||
         thinking
       )
         return;
@@ -616,7 +561,7 @@ const Completion1 = () => {
           const fromCol = selectedSquare.col;
           const movingPiece = board[fromRow][fromCol];
 
-          if (movingPiece[1] === "P" && (row === 0 || row === 7)) {
+          if (movingPiece[1] === 'P' && (row === 0 || row === 7)) {
             setShowPromotion({ fromRow, fromCol, toRow: row, toCol: col });
             setSelectedSquare(null);
             setPossibleMoves([]);
@@ -627,22 +572,18 @@ const Completion1 = () => {
           return;
         }
 
-        if (!piece || piece[0] !== "w") {
+        if (!piece || piece[0] !== 'w') {
           setSelectedSquare(null);
           setPossibleMoves([]);
           return;
         }
       }
 
-      if (piece && piece[0] === "w") {
+      if (piece && piece[0] === 'w') {
         setSelectedSquare({ row, col });
-        const moves = getPossibleMoves(
-          board,
-          row,
-          col,
-          enPassantSquare,
-          castlingRights
-        ).filter((m) => isLegalMove(board, row, col, m.row, m.col));
+        const moves = getPossibleMoves(board, row, col, enPassantSquare, castlingRights).filter(
+          (m) => isLegalMove(board, row, col, m.row, m.col)
+        );
         setPossibleMoves(moves);
       }
     },
@@ -661,33 +602,27 @@ const Completion1 = () => {
 
   // Request a hint from Stockfish
   const requestHint = useCallback(() => {
-    if (
-      !stockfishRef.current ||
-      !stockfishReady ||
-      hintsRemaining <= 0 ||
-      turn !== "w" ||
-      thinking
-    )
+    if (!stockfishRef.current || !stockfishReady || hintsRemaining <= 0 || turn !== 'w' || thinking)
       return;
 
     setThinking(true);
     setHintsRemaining(hintsRemaining - 1);
-    pendingEvalRef.current = "hint";
+    pendingEvalRef.current = 'hint';
 
     const fen = boardToFEN(
       board,
-      "w",
-      (castlingRights.wK ? "K" : "") +
-        (castlingRights.wQ ? "Q" : "") +
-        (castlingRights.bK ? "k" : "") +
-        (castlingRights.bQ ? "q" : "") || "-",
+      'w',
+      (castlingRights.wK ? 'K' : '') +
+        (castlingRights.wQ ? 'Q' : '') +
+        (castlingRights.bK ? 'k' : '') +
+        (castlingRights.bQ ? 'q' : '') || '-',
       enPassantSquare,
       halfmoveClock,
       fullmoveNumber
     );
 
     stockfishRef.current.postMessage(`position fen ${fen}`);
-    stockfishRef.current.postMessage("go depth 15");
+    stockfishRef.current.postMessage('go depth 15');
   }, [
     stockfishReady,
     hintsRemaining,
@@ -705,8 +640,8 @@ const Completion1 = () => {
     setBoard(initialBoard());
     setSelectedSquare(null);
     setPossibleMoves([]);
-    setTurn("w");
-    setGameStatus("playing");
+    setTurn('w');
+    setGameStatus('playing');
     setMoveHistory([]);
     setHintsRemaining(3);
     setHintMove(null);
@@ -722,92 +657,82 @@ const Completion1 = () => {
   const getSquareColor = (row, col) => {
     const isLight = (row + col) % 2 === 0;
 
-    if (
-      selectedSquare &&
-      selectedSquare.row === row &&
-      selectedSquare.col === col
-    ) {
-      return "#7b61ff";
+    if (selectedSquare && selectedSquare.row === row && selectedSquare.col === col) {
+      return '#7b61ff';
     }
 
     if (hintMove) {
       const { from, to } = parseUCI(hintMove);
-      if (
-        (from.row === row && from.col === col) ||
-        (to.row === row && to.col === col)
-      ) {
-        return "#4caf50";
+      if ((from.row === row && from.col === col) || (to.row === row && to.col === col)) {
+        return '#4caf50';
       }
     }
 
     if (possibleMoves.some((m) => m.row === row && m.col === col)) {
-      return isLight ? "#90EE90" : "#228B22";
+      return isLight ? '#90EE90' : '#228B22';
     }
 
-    return isLight ? "#f0d9b5" : "#b58863";
+    return isLight ? '#f0d9b5' : '#b58863';
   };
 
   // Get status message
   const getStatusMessage = () => {
     switch (gameStatus) {
-      case "checkmate-white":
-        return "🎉 Checkmate! You win!";
-      case "checkmate-black":
-        return "😔 Checkmate! Bot wins!";
-      case "stalemate":
-        return "🤝 Stalemate! Draw!";
-      case "check":
-        return "⚠️ Check!";
+      case 'checkmate-white':
+        return '🎉 Checkmate! You win!';
+      case 'checkmate-black':
+        return '😔 Checkmate! Bot wins!';
+      case 'stalemate':
+        return '🤝 Stalemate! Draw!';
+      case 'check':
+        return '⚠️ Check!';
       default:
-        return turn === "w" ? "♔ Your turn (White)" : "♚ Bot is thinking...";
+        return turn === 'w' ? '♔ Your turn (White)' : '♚ Bot is thinking...';
     }
   };
 
   return (
     <div
       style={{
-        padding: "20px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        fontFamily: "Arial, sans-serif",
-        backgroundColor: "#1a1a2e",
-        minHeight: "100vh",
-        color: "#fff",
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        fontFamily: 'Arial, sans-serif',
+        backgroundColor: '#1a1a2e',
+        minHeight: '100vh',
+        color: '#fff',
       }}
     >
-      <h1 style={{ marginBottom: "10px", color: "#7b61ff" }}>
-        ♟️ Stockfish Chess
-      </h1>
+      <h1 style={{ marginBottom: '10px', color: '#7b61ff' }}>♟️ Stockfish Chess</h1>
       <p
         style={{
-          marginBottom: "20px",
-          color: "#888",
-          textAlign: "center",
-          maxWidth: "500px",
+          marginBottom: '20px',
+          color: '#888',
+          textAlign: 'center',
+          maxWidth: '500px',
         }}
       >
-        Play against Stockfish! Use your hints wisely - you only have{" "}
-        {hintsRemaining} left. The bot plays black and will respond to your
-        moves.
+        Play against Stockfish! Use your hints wisely - you only have {hintsRemaining} left. The bot
+        plays black and will respond to your moves.
       </p>
 
       <div
         style={{
-          display: "flex",
-          gap: "30px",
-          flexWrap: "wrap",
-          justifyContent: "center",
+          display: 'flex',
+          gap: '30px',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
         {/* Chess Board */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(8, 60px)",
-            gridTemplateRows: "repeat(8, 60px)",
-            border: "4px solid #333",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+            display: 'grid',
+            gridTemplateColumns: 'repeat(8, 60px)',
+            gridTemplateRows: 'repeat(8, 60px)',
+            border: '4px solid #333',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
           }}
         >
           {board.map((row, rowIndex) =>
@@ -816,29 +741,27 @@ const Completion1 = () => {
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => handleSquareClick(rowIndex, colIndex)}
                 style={{
-                  width: "60px",
-                  height: "60px",
+                  width: '60px',
+                  height: '60px',
                   backgroundColor: getSquareColor(rowIndex, colIndex),
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "45px",
-                  cursor: turn === "w" && !thinking ? "pointer" : "default",
-                  userSelect: "none",
-                  position: "relative",
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '45px',
+                  cursor: turn === 'w' && !thinking ? 'pointer' : 'default',
+                  userSelect: 'none',
+                  position: 'relative',
                 }}
               >
                 {piece && PIECES[piece]}
-                {possibleMoves.some(
-                  (m) => m.row === rowIndex && m.col === colIndex
-                ) &&
+                {possibleMoves.some((m) => m.row === rowIndex && m.col === colIndex) &&
                   !board[rowIndex][colIndex] && (
                     <div
                       style={{
-                        width: "15px",
-                        height: "15px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(0,0,0,0.2)",
+                        width: '15px',
+                        height: '15px',
+                        borderRadius: '50%',
+                        backgroundColor: 'rgba(0,0,0,0.2)',
                       }}
                     />
                   )}
@@ -850,47 +773,41 @@ const Completion1 = () => {
         {/* Controls Panel */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "15px",
-            minWidth: "250px",
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '15px',
+            minWidth: '250px',
           }}
         >
           {/* Status */}
           <div
             style={{
-              padding: "15px",
-              backgroundColor: "#16213e",
-              borderRadius: "10px",
-              textAlign: "center",
+              padding: '15px',
+              backgroundColor: '#16213e',
+              borderRadius: '10px',
+              textAlign: 'center',
             }}
           >
-            <div style={{ fontSize: "18px", fontWeight: "bold" }}>
-              {getStatusMessage()}
-            </div>
-            {thinking && (
-              <div style={{ marginTop: "10px", color: "#7b61ff" }}>
-                🤔 Thinking...
-              </div>
-            )}
+            <div style={{ fontSize: '18px', fontWeight: 'bold' }}>{getStatusMessage()}</div>
+            {thinking && <div style={{ marginTop: '10px', color: '#7b61ff' }}>🤔 Thinking...</div>}
           </div>
 
           {/* Evaluation */}
           {evaluation && (
             <div
               style={{
-                padding: "10px",
-                backgroundColor: "#16213e",
-                borderRadius: "10px",
-                textAlign: "center",
+                padding: '10px',
+                backgroundColor: '#16213e',
+                borderRadius: '10px',
+                textAlign: 'center',
               }}
             >
-              <div style={{ color: "#888", fontSize: "12px" }}>Evaluation</div>
+              <div style={{ color: '#888', fontSize: '12px' }}>Evaluation</div>
               <div
                 style={{
-                  fontSize: "24px",
-                  fontWeight: "bold",
-                  color: parseFloat(evaluation) > 0 ? "#4caf50" : "#f44336",
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                  color: parseFloat(evaluation) > 0 ? '#4caf50' : '#f44336',
                 }}
               >
                 {evaluation}
@@ -903,23 +820,20 @@ const Completion1 = () => {
             onClick={requestHint}
             disabled={
               hintsRemaining <= 0 ||
-              turn !== "w" ||
+              turn !== 'w' ||
               thinking ||
-              gameStatus.startsWith("checkmate") ||
-              gameStatus === "stalemate"
+              gameStatus.startsWith('checkmate') ||
+              gameStatus === 'stalemate'
             }
             style={{
-              padding: "15px",
-              fontSize: "16px",
-              backgroundColor: hintsRemaining > 0 ? "#7b61ff" : "#444",
-              color: "#fff",
-              border: "none",
-              borderRadius: "10px",
-              cursor:
-                hintsRemaining > 0 && turn === "w" && !thinking
-                  ? "pointer"
-                  : "not-allowed",
-              transition: "all 0.3s",
+              padding: '15px',
+              fontSize: '16px',
+              backgroundColor: hintsRemaining > 0 ? '#7b61ff' : '#444',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '10px',
+              cursor: hintsRemaining > 0 && turn === 'w' && !thinking ? 'pointer' : 'not-allowed',
+              transition: 'all 0.3s',
             }}
           >
             💡 Get Hint ({hintsRemaining} remaining)
@@ -928,11 +842,11 @@ const Completion1 = () => {
           {hintMove && (
             <div
               style={{
-                padding: "10px",
-                backgroundColor: "#4caf50",
-                borderRadius: "10px",
-                textAlign: "center",
-                color: "#fff",
+                padding: '10px',
+                backgroundColor: '#4caf50',
+                borderRadius: '10px',
+                textAlign: 'center',
+                color: '#fff',
               }}
             >
               Suggested: <strong>{hintMove}</strong>
@@ -942,14 +856,12 @@ const Completion1 = () => {
           {/* Difficulty */}
           <div
             style={{
-              padding: "10px",
-              backgroundColor: "#16213e",
-              borderRadius: "10px",
+              padding: '10px',
+              backgroundColor: '#16213e',
+              borderRadius: '10px',
             }}
           >
-            <div
-              style={{ marginBottom: "5px", color: "#888", fontSize: "12px" }}
-            >
+            <div style={{ marginBottom: '5px', color: '#888', fontSize: '12px' }}>
               Bot Difficulty (Depth: {difficulty})
             </div>
             <input
@@ -958,7 +870,7 @@ const Completion1 = () => {
               max="20"
               value={difficulty}
               onChange={(e) => setDifficulty(parseInt(e.target.value))}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
             />
           </div>
 
@@ -966,14 +878,14 @@ const Completion1 = () => {
           <button
             onClick={resetGame}
             style={{
-              padding: "15px",
-              fontSize: "16px",
-              backgroundColor: "#e74c3c",
-              color: "#fff",
-              border: "none",
-              borderRadius: "10px",
-              cursor: "pointer",
-              transition: "all 0.3s",
+              padding: '15px',
+              fontSize: '16px',
+              backgroundColor: '#e74c3c',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '10px',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
             }}
           >
             🔄 New Game
@@ -982,24 +894,20 @@ const Completion1 = () => {
           {/* Move History */}
           <div
             style={{
-              padding: "10px",
-              backgroundColor: "#16213e",
-              borderRadius: "10px",
-              maxHeight: "150px",
-              overflow: "auto",
+              padding: '10px',
+              backgroundColor: '#16213e',
+              borderRadius: '10px',
+              maxHeight: '150px',
+              overflow: 'auto',
             }}
           >
-            <div
-              style={{ color: "#888", fontSize: "12px", marginBottom: "5px" }}
-            >
-              Move History
-            </div>
-            <div style={{ fontSize: "12px", fontFamily: "monospace" }}>
+            <div style={{ color: '#888', fontSize: '12px', marginBottom: '5px' }}>Move History</div>
+            <div style={{ fontSize: '12px', fontFamily: 'monospace' }}>
               {moveHistory.length === 0
-                ? "No moves yet"
+                ? 'No moves yet'
                 : moveHistory.map((move, i) => (
-                    <span key={i} style={{ marginRight: "10px" }}>
-                      {i % 2 === 0 ? `${Math.floor(i / 2) + 1}. ` : ""}
+                    <span key={i} style={{ marginRight: '10px' }}>
+                      {i % 2 === 0 ? `${Math.floor(i / 2) + 1}. ` : ''}
                       {move}
                     </span>
                   ))}
@@ -1009,14 +917,14 @@ const Completion1 = () => {
           {/* Stockfish Status */}
           <div
             style={{
-              padding: "10px",
-              backgroundColor: stockfishReady ? "#1e4620" : "#462020",
-              borderRadius: "10px",
-              textAlign: "center",
-              fontSize: "12px",
+              padding: '10px',
+              backgroundColor: stockfishReady ? '#1e4620' : '#462020',
+              borderRadius: '10px',
+              textAlign: 'center',
+              fontSize: '12px',
             }}
           >
-            {stockfishReady ? "✅ Stockfish Ready" : "⏳ Loading Stockfish..."}
+            {stockfishReady ? '✅ Stockfish Ready' : '⏳ Loading Stockfish...'}
           </div>
         </div>
       </div>
@@ -1025,40 +933,40 @@ const Completion1 = () => {
       {showPromotion && (
         <div
           style={{
-            position: "fixed",
+            position: 'fixed',
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.8)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             zIndex: 1000,
           }}
         >
           <div
             style={{
-              backgroundColor: "#16213e",
-              padding: "20px",
-              borderRadius: "15px",
-              textAlign: "center",
+              backgroundColor: '#16213e',
+              padding: '20px',
+              borderRadius: '15px',
+              textAlign: 'center',
             }}
           >
-            <h3 style={{ marginBottom: "15px" }}>Choose Promotion</h3>
-            <div style={{ display: "flex", gap: "10px" }}>
-              {["Q", "R", "B", "N"].map((piece) => (
+            <h3 style={{ marginBottom: '15px' }}>Choose Promotion</h3>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              {['Q', 'R', 'B', 'N'].map((piece) => (
                 <button
                   key={piece}
                   onClick={() => handlePromotion(piece)}
                   style={{
-                    width: "60px",
-                    height: "60px",
-                    fontSize: "40px",
-                    backgroundColor: "#f0d9b5",
-                    border: "none",
-                    borderRadius: "10px",
-                    cursor: "pointer",
+                    width: '60px',
+                    height: '60px',
+                    fontSize: '40px',
+                    backgroundColor: '#f0d9b5',
+                    border: 'none',
+                    borderRadius: '10px',
+                    cursor: 'pointer',
                   }}
                 >
                   {PIECES[`w${piece}`]}

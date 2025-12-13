@@ -41,7 +41,7 @@ const Completion5 = () => {
 
   const copyAsHtml = async () => {
     if (format !== 'text') return;
-    
+
     const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD'];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     const htmlContent = `
@@ -62,10 +62,12 @@ const Completion5 = () => {
     try {
       const blob = new Blob([htmlContent], { type: 'text/html' });
       const textBlob = new Blob([content], { type: 'text/plain' });
-      const data = [new ClipboardItem({ 
-        'text/html': blob,
-        'text/plain': textBlob 
-      })];
+      const data = [
+        new ClipboardItem({
+          'text/html': blob,
+          'text/plain': textBlob,
+        }),
+      ];
       await navigator.clipboard.write(data);
       setMessage('Copied as HTML! Paste it back to continue.');
     } catch (err) {
@@ -79,16 +81,16 @@ const Completion5 = () => {
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    
+
     // Extract text from HTML (simple strip tags)
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = content;
-    const text = tempDiv.textContent || tempDiv.innerText || "";
+    const text = tempDiv.textContent || tempDiv.innerText || '';
 
     // Canvas setup
     canvas.width = 600;
     canvas.height = 400;
-    
+
     // Background
     const gradient = ctx.createLinearGradient(0, 0, 600, 400);
     gradient.addColorStop(0, '#2c3e50');
@@ -101,13 +103,13 @@ const Completion5 = () => {
     ctx.font = '30px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    
+
     // Simple word wrap
     const words = text.split(' ');
     let line = '';
-    let y = 200 - (Math.floor(words.length / 10) * 20); // Approximate centering
-    
-    for(let n = 0; n < words.length; n++) {
+    let y = 200 - Math.floor(words.length / 10) * 20; // Approximate centering
+
+    for (let n = 0; n < words.length; n++) {
       const testLine = line + words[n] + ' ';
       const metrics = ctx.measureText(testLine);
       const testWidth = metrics.width;
@@ -122,12 +124,12 @@ const Completion5 = () => {
     ctx.fillText(line, 300, y);
 
     // Add "glitch" effect lines
-    for(let i=0; i<10; i++) {
-        ctx.strokeStyle = `rgba(255,255,255,0.1)`;
-        ctx.beginPath();
-        ctx.moveTo(0, Math.random() * 400);
-        ctx.lineTo(600, Math.random() * 400);
-        ctx.stroke();
+    for (let i = 0; i < 10; i++) {
+      ctx.strokeStyle = `rgba(255,255,255,0.1)`;
+      ctx.beginPath();
+      ctx.moveTo(0, Math.random() * 400);
+      ctx.lineTo(600, Math.random() * 400);
+      ctx.stroke();
     }
 
     try {
@@ -137,8 +139,8 @@ const Completion5 = () => {
         setMessage('Copied as Image! Paste it back to continue.');
       });
     } catch (err) {
-       console.error(err);
-       setMessage('Failed to copy image. ' + err.message);
+      console.error(err);
+      setMessage('Failed to copy image. ' + err.message);
     }
   };
 
@@ -157,16 +159,18 @@ const Completion5 = () => {
   };
 
   return (
-    <div style={{ 
-      padding: '40px', 
-      fontFamily: 'system-ui, sans-serif',
-      maxWidth: '800px',
-      margin: '0 auto',
-      color: '#333'
-    }}>
+    <div
+      style={{
+        padding: '40px',
+        fontFamily: 'system-ui, sans-serif',
+        maxWidth: '800px',
+        margin: '0 auto',
+        color: '#333',
+      }}
+    >
       <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>🍝 Copy Pasta Converter 🍝</h2>
-      
-      <div 
+
+      <div
         onPaste={handlePaste}
         style={{
           border: '3px dashed #ccc',
@@ -180,34 +184,35 @@ const Completion5 = () => {
           backgroundColor: '#f9f9f9',
           transition: 'all 0.3s ease',
           cursor: 'text',
-          position: 'relative'
+          position: 'relative',
         }}
       >
         {format === 'empty' && (
           <div style={{ textAlign: 'center', color: '#888' }}>
             <div style={{ fontSize: '48px', marginBottom: '20px' }}>📋</div>
             <h3>Paste anything here!</h3>
-            <p>Supports: Text -> HTML -> Image -> Text loop</p>
+            <p>
+              Supports: Text {'->'} HTML {'->'} Image {'->'} Text loop
+            </p>
           </div>
         )}
 
         {format === 'text' && (
           <div style={{ width: '100%', textAlign: 'center' }}>
-            <div style={{ 
-              backgroundColor: 'white', 
-              padding: '20px', 
-              borderRadius: '10px',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-              marginBottom: '20px',
-              fontSize: '18px'
-            }}>
+            <div
+              style={{
+                backgroundColor: 'white',
+                padding: '20px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                marginBottom: '20px',
+                fontSize: '18px',
+              }}
+            >
               {content}
             </div>
             <div style={{ color: '#666', marginBottom: '20px' }}>Detected: Plain Text</div>
-            <button 
-              onClick={copyAsHtml}
-              style={buttonStyle}
-            >
+            <button onClick={copyAsHtml} style={buttonStyle}>
               ✨ Copy as HTML
             </button>
           </div>
@@ -215,20 +220,17 @@ const Completion5 = () => {
 
         {format === 'html' && (
           <div style={{ width: '100%', textAlign: 'center' }}>
-            <div 
-              dangerouslySetInnerHTML={{ __html: content }} 
-              style={{ 
+            <div
+              dangerouslySetInnerHTML={{ __html: content }}
+              style={{
                 marginBottom: '20px',
                 boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
                 borderRadius: '10px',
-                overflow: 'hidden'
+                overflow: 'hidden',
               }}
             />
             <div style={{ color: '#666', marginBottom: '20px' }}>Detected: HTML Content</div>
-            <button 
-              onClick={copyAsImage}
-              style={buttonStyle}
-            >
+            <button onClick={copyAsImage} style={buttonStyle}>
               🖼️ Copy as Image
             </button>
           </div>
@@ -236,22 +238,19 @@ const Completion5 = () => {
 
         {format === 'image' && (
           <div style={{ width: '100%', textAlign: 'center' }}>
-            <img 
-              src={content} 
-              alt="Pasted content" 
-              style={{ 
-                maxWidth: '100%', 
-                maxHeight: '400px', 
+            <img
+              src={content}
+              alt="Pasted content"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '400px',
                 borderRadius: '10px',
                 boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                marginBottom: '20px'
-              }} 
+                marginBottom: '20px',
+              }}
             />
             <div style={{ color: '#666', marginBottom: '20px' }}>Detected: Image</div>
-            <button 
-              onClick={copyAsText}
-              style={buttonStyle}
-            >
+            <button onClick={copyAsText} style={buttonStyle}>
               📝 Copy as Text
             </button>
           </div>
@@ -259,22 +258,24 @@ const Completion5 = () => {
       </div>
 
       {message && (
-        <div style={{
-          marginTop: '20px',
-          padding: '15px',
-          backgroundColor: '#e8f5e9',
-          color: '#2e7d32',
-          borderRadius: '8px',
-          textAlign: 'center',
-          animation: 'fadeIn 0.5s'
-        }}>
+        <div
+          style={{
+            marginTop: '20px',
+            padding: '15px',
+            backgroundColor: '#e8f5e9',
+            color: '#2e7d32',
+            borderRadius: '8px',
+            textAlign: 'center',
+            animation: 'fadeIn 0.5s',
+          }}
+        >
           {message}
         </div>
       )}
 
       {/* Hidden canvas for processing */}
       <canvas ref={canvasRef} style={{ display: 'none' }} />
-      
+
       <div style={{ marginTop: '40px', textAlign: 'center', color: '#888', fontSize: '14px' }}>
         <p>Challenge: Infinite Copy Paste Loop</p>
       </div>
@@ -292,7 +293,7 @@ const buttonStyle = {
   cursor: 'pointer',
   transition: 'transform 0.1s, background-color 0.2s',
   boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-  fontWeight: 'bold'
+  fontWeight: 'bold',
 };
 
 export default Completion5;
