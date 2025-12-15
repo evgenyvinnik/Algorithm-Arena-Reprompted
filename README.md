@@ -8,7 +8,7 @@ Based on challenges from [Algorithm Arena](https://github.com/Algorithm-Arena).
 
 This project set out to answer a simple question: **Can modern LLMs implement complete, working applications from a single prompt?**
 
-Each week, [Algorithm Arena](https://github.com/Algorithm-Arena) publishes a programming challenge. Rather than solving these challenges manually, I gave two frontier LLMs — **Claude Opus 4.5** and **Gemini 3 Pro** — minimal prompts pointing to the challenge repositories and asked them to produce self-contained React components.
+Each week, [Algorithm Arena](https://github.com/Algorithm-Arena) published a programming challenge. Rather than solving these challenges manually, I gave two frontier LLMs — **Claude Opus 4.5** and **Gemini 3 Pro** — minimal prompts pointing to the challenge repositories and asked them to produce self-contained React components.
 
 ### What Was Tested
 
@@ -20,19 +20,21 @@ Each week, [Algorithm Arena](https://github.com/Algorithm-Arena) publishes a pro
 
 | Aspect | Opus 4.5 | Gemini 3 Pro |
 |--------|----------|--------------|
-| Functional correctness | Generally high | Generally high |
-| UI polish | Richer, more styled | Minimal / bare-bones |
+| Functional correctness | Mixed — many partial or broken implementations | Mixed — similar struggles |
+| UI polish | Better than Gemini, but often rough | Frequently unusable / bare-bones |
 | Self-containment | Good | Good |
-| Edge-case handling | Variable | Variable |
+| Edge-case handling | Poor | Poor |
 
-- Both models successfully produced **72 working React components** (36 each) across 36 distinct challenges.
-- Opus 4.5 tended to generate more visually polished interfaces out of the box.
-- Gemini 3 Pro often delivered correct logic but with spartan UIs, prompting me to later request "nice UI" explicitly.
-- Neither model required multiple turns of debugging for the majority of challenges — most outputs ran on the first try.
+- Both models produced **72 React components** (36 each) across 36 distinct challenges — but **quality varied wildly**.
+- **Human contestants from a year ago generally outperformed both LLMs** on the same challenges, often by a wide margin.
+- Opus 4.5 tended to generate somewhat more polished interfaces, but "polished" is relative. Purple UI Syndrome is there!
+- Gemini 3 Pro frequently delivered bare-minimum UIs that were **borderline unusable**, forcing me to explicitly request "nice UI" in later prompts.
+- **Neither model reliably one-shot these challenges.** Ambiguous prompts exposed gaps in reasoning, specification interpretation, and attention to detail.
+- Edge cases, error handling, and overall robustness were weak across the board.
 
 ### Conclusion
 
-Modern LLMs can translate a problem description into a functioning, deployable application with remarkable reliability. The bottleneck is no longer "can it code?" but "does the output meet your taste?" — a matter of prompt tuning and model personality rather than fundamental capability.
+**Current LLMs cannot reliably one-shot complete applications from a single ambiguous prompt.** While they can produce code that compiles and sometimes runs, the outputs often fall short of what a motivated human developer achieved a year ago under the same constraints.
 
 ## Prompt Format
 
@@ -146,7 +148,7 @@ The repository SLOC was measured with `scripts/sloc.mjs` on 2025-12-14.
 
 - **Total SLOC:** 167,693
 - **Breakdown by extension (non-empty lines):**
-  - `.js`: 131,157
+  - `.js`: 131,157 -> Gemini 3 added entire stockfish!
   - `.jsx`: 36,065
   - `.css`: 172
   - `.mjs`: 120
