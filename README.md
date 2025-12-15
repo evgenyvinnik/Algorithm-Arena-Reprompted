@@ -28,6 +28,10 @@ Make sure to put everything into Completion4.jsx file
 
 The LLMs were expected to read the challenge description from the GitHub repository and implement a complete solution as a single React component.
 
+## Notes
+Gemini 3 quickly converged on giving me the most barebone UI possible, to the point that output was impossible to use.
+I eventually gave up and started to ask both LLMs to give me "nice UI" (I know - ambiguous request, but still)
+
 ## Tools Used
 
 - **Opus 4.5 completions**: GitHub Copilot + Claude Opus 4.5 (Preview)

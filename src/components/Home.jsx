@@ -127,11 +127,26 @@ const promptLinks = {
     name: 'Daily Ping',
     url: 'https://github.com/Algorithm-Arena/weekly-challenge-31-daily-ping',
   },
-  32: { name: 'Challenge 32', url: 'https://github.com' },
-  33: { name: 'Challenge 33', url: 'https://github.com' },
-  34: { name: 'Challenge 34', url: 'https://github.com' },
-  35: { name: 'Challenge 35', url: 'https://github.com' },
-  36: { name: 'Challenge 36', url: 'https://github.com' },
+  32: {
+    name: 'Press Record',
+    url: 'https://github.com/Algorithm-Arena/weekly-challenge-32-press-record',
+  },
+  33: {
+    name: 'ARC not AGI',
+    url: 'https://github.com/Algorithm-Arena/weekly-challenge-33-arc-not-agi',
+  },
+  34: {
+    name: 'Mini Minecraft',
+    url: 'https://github.com/Algorithm-Arena/weekly-challenge-34-mini-minecraft',
+  },
+  35: {
+    name: 'Baseball Reflex',
+    url: 'https://github.com/Algorithm-Arena/weekly-challenge-35-baseball-reflex',
+  },
+  36: {
+    name: 'Challenge Running',
+    url: 'https://github.com/Algorithm-Arena/weekly-challenge-36-challenge-running',
+  },
 };
 
 const humanReviewLinks = {
@@ -166,11 +181,11 @@ const humanReviewLinks = {
   29: 'Opus 4.5 - much better job!',
   30: 'Opus 4.5 made an actually useful tool, Gemini 3 - too',
   31: 'Opus 4.5 - much better job!',
-  32: 'Not Implemented',
-  33: 'Not Implemented',
-  34: 'Not Implemented',
-  35: 'Not Implemented',
-  36: 'Not Implemented',
+  32: 'Gemini 3 cannot make UI pretty unless being asked :(',
+  33: 'Yet again, Gemini - disaster, Opus 4.5 - 👌',
+  34: 'Opus 4.5 - this is Minecraft, Gemini 3 - 🗿',
+  35: 'Opus 4.5 - unusable, Gemini 3 - also unusable',
+  36: 'Result of the personal challenge - AGI is not here yet',
 };
 
 const Home = () => {
