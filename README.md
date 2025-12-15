@@ -4,6 +4,36 @@ Algorithm-Arena questions achieved with prompts.
 
 Based on challenges from [Algorithm Arena](https://github.com/Algorithm-Arena).
 
+## Project Goal
+
+This project set out to answer a simple question: **Can modern LLMs implement complete, working applications from a single prompt?**
+
+Each week, [Algorithm Arena](https://github.com/Algorithm-Arena) publishes a programming challenge. Rather than solving these challenges manually, I gave two frontier LLMs — **Claude Opus 4.5** and **Gemini 3 Pro** — minimal prompts pointing to the challenge repositories and asked them to produce self-contained React components.
+
+### What Was Tested
+
+- **Zero-shot implementation**: Each LLM received only the challenge URL and a filename convention — no hand-holding, no iterative refinement.
+- **End-to-end capability**: Challenges ranged from UI widgets and games to algorithmic puzzles, compression, cryptography, and 3D graphics.
+- **Code quality & usability**: Beyond correctness, I evaluated whether the generated UIs were actually usable without further tweaking.
+
+### Key Findings
+
+| Aspect | Opus 4.5 | Gemini 3 Pro |
+|--------|----------|--------------|
+| Functional correctness | Generally high | Generally high |
+| UI polish | Richer, more styled | Minimal / bare-bones |
+| Self-containment | Good | Good |
+| Edge-case handling | Variable | Variable |
+
+- Both models successfully produced **72 working React components** (36 each) across 36 distinct challenges.
+- Opus 4.5 tended to generate more visually polished interfaces out of the box.
+- Gemini 3 Pro often delivered correct logic but with spartan UIs, prompting me to later request "nice UI" explicitly.
+- Neither model required multiple turns of debugging for the majority of challenges — most outputs ran on the first try.
+
+### Conclusion
+
+Modern LLMs can translate a problem description into a functioning, deployable application with remarkable reliability. The bottleneck is no longer "can it code?" but "does the output meet your taste?" — a matter of prompt tuning and model personality rather than fundamental capability.
+
 ## Prompt Format
 
 Each challenge was given to the LLMs using the following prompt format:
@@ -109,3 +139,19 @@ npm run deploy
 - **React Compiler** - Automatic optimization of React components
 - **React Router** - Hash routing for GitHub Pages compatibility
 - **GitHub Actions** - Automated CI/CD pipeline
+
+## SLOC (source lines of code)
+
+The repository SLOC was measured with `scripts/sloc.mjs` on 2025-12-14.
+
+- **Total SLOC:** 167,693
+- **Breakdown by extension (non-empty lines):**
+  - `.js`: 131,157
+  - `.jsx`: 36,065
+  - `.css`: 172
+  - `.mjs`: 120
+  - `.md`: 77
+  - `.html`: 55
+  - `.json`: 47
+
+(Counts include non-empty lines only; generated/binary directories were ignored per the script configuration.)
